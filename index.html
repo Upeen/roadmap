@@ -725,46 +725,176 @@
         difficulty: "advanced"
       },
       {
-        title: "NoSQL Roadmap",
-        description: "Master NoSQL databases for scalable, flexible data storage across document, key-value, columnar, and graph models.",
-        image: "https://cdn.simpleicons.org/mongodb/0AF",
-        levels: {
-          beginner: [
-            { topic: "Introduction to NoSQL", concepts: ["What is NoSQL?", "SQL vs NoSQL", "Use Cases", "Polyglot Persistence"], description: "Understand when and why to use NoSQL databases." },
-            { topic: "Types of NoSQL", concepts: ["Document", "Key-Value", "Column-Family", "Graph", "Time-Series"], description: "Learn the four main categories and their applications." },
-            { topic: "Document Databases", concepts: ["MongoDB", "Couchbase", "JSON/BSON", "Flexible Schema"], description: "Work with flexible schema document stores." },
-            { topic: "Key-Value Stores", concepts: ["Redis", "DynamoDB", "Memcached", "Caching Patterns"], description: "Use fast, simple data structures for caching and sessions." },
-            { topic: "Setup & Installation", concepts: ["MongoDB Atlas", "Redis CLI", "Local DBs", "Cloud Services"], description: "Get started with local or cloud-based NoSQL instances." }
-          ],
-          intermediate: [
-            { topic: "MongoDB CRUD", concepts: ["insert()", "find()", "update()", "delete()", "Aggregation Pipeline"], description: "Perform operations in MongoDB using shell or drivers." },
-            { topic: "Indexing in NoSQL", concepts: ["Single", "Compound", "TTL", "Text indexes", "Geospatial"], description: "Speed up queries with proper indexing." },
-            { topic: "Aggregation Pipeline", concepts: ["$match", "$group", "$sort", "$project", "$lookup"], description: "Transform and analyze data in MongoDB." },
-            { topic: "Cassandra Basics", concepts: ["CQL", "Partition Keys", "Clustering", "Consistency Levels"], description: "Handle large-scale columnar data efficiently." },
-            { topic: "Redis Data Structures", concepts: ["Strings", "Hashes", "Lists", "Sets", "ZSets", "Streams"], description: "Use Redis for advanced caching and real-time features." },
-            { topic: "Consistency & CAP Theorem", concepts: ["Eventual Consistency", "Tunable Consistency", "Trade-offs", "BASE"], description: "Understand distributed system design principles." }
-          ],
-          advanced: [
-            { topic: "Scaling & Sharding", concepts: ["Horizontal Scaling", "Shard Keys", "MongoDB Sharding", "Cassandra Rings"], description: "Scale databases across multiple nodes." },
-            { topic: "Replication & High Availability", concepts: ["MongoDB Replica Sets", "Cassandra Multi-DC", "Failover"], description: "Ensure uptime and fault tolerance." },
-            { topic: "Cloud NoSQL", concepts: ["DynamoDB", "Firestore", "Cosmos DB", "Aurora"], description: "Use managed NoSQL services on AWS, GCP, Azure." },
-            { topic: "Performance Tuning", concepts: ["Query Optimization", "Memory Management", "Connection Pooling", "Caching Strategies"], description: "Optimize latency and throughput." },
-            { topic: "Security", concepts: ["Authentication", "Encryption", "Role-Based Access", "Auditing"], description: "Secure data at rest and in transit." },
-            { topic: "Backup & Recovery", concepts: ["mongodump", "snapshots", "point-in-time recovery", "Replica Set Recovery"], description: "Implement disaster recovery strategies." }
-          ],
-          expert: [
-            { topic: "Real-Time Applications", concepts: ["Pub/Sub with Redis", "Change Streams in MongoDB", "Real-time Analytics"], description: "Build event-driven and reactive systems." },
-            { topic: "Time-Series Data", concepts: ["MongoDB Time Series", "InfluxDB", "OpenTSDB", "Time-Series Indexing"], description: "Store and query time-stamped data efficiently." },
-            { topic: "Graph Databases", concepts: ["Neo4j", "Cypher Query Language", "Relationships", "Graph Algorithms"], description: "Model and query highly connected data." },
-            { topic: "Hybrid Architectures", concepts: ["Polyglot Persistence", "SQL + NoSQL", "Data Mesh"], description: "Combine multiple databases for optimal performance." },
-            { topic: "Monitoring & Observability", concepts: ["Prometheus", "Grafana", "CloudWatch", "Custom Metrics"], description: "Track database health and performance." },
-            { topic: "NoSQL Internals", concepts: ["LSM Trees", "B-Trees", "Consistent Hashing", "Vector Clocks"], description: "Understand the underlying storage engines." }
-          ]
-        },
-        tools: ["MongoDB", "Redis", "Cassandra", "DynamoDB", "Neo4j", "Firestore", "Couchbase", "InfluxDB", "Prometheus", "Grafana", "ArangoDB", "OrientDB"],
-        difficulty: "intermediate"
+  "title": "NoSQL Roadmap",
+  "description": "A structured path to master NoSQL databases from fundamentals to advanced distributed data management and analytics.",
+  "image": "https://cdn.simpleicons.org/mongodb/47A248",
+  "levels": {
+    "beginner": [
+      { 
+        "topic": "Introduction", 
+        "concepts": ["What is NoSQL?", "SQL vs NoSQL", "History & Evolution", "CAP Theorem"], 
+        "description": "Understand the motivation behind NoSQL and how it differs from relational databases." 
       },
-      {
+      { 
+        "topic": "Types of NoSQL Databases", 
+        "concepts": ["Document-based", "Key-Value", "Column-family", "Graph"], 
+        "description": "Explore the four major categories of NoSQL databases and their use cases." 
+      },
+      { 
+        "topic": "Data Modeling Basics", 
+        "concepts": ["Schema-less Design", "Denormalization", "Entity Representation"], 
+        "description": "Learn how NoSQL handles flexible schemas and data modeling." 
+      },
+      { 
+        "topic": "CRUD Operations", 
+        "concepts": ["Create (Insert)", "Read (Find/Query)", "Update", "Delete"], 
+        "description": "Perform basic operations across NoSQL systems." 
+      },
+      { 
+        "topic": "Basic Queries", 
+        "concepts": ["Filters", "Sorting", "Projections", "Key-based Lookups"], 
+        "description": "Retrieve and filter data in different NoSQL models." 
+      },
+      { 
+        "topic": "Indexes", 
+        "concepts": ["Single-field Index", "Compound Index", "Unique Index", "TTL Index"], 
+        "description": "Speed up queries and support data lifecycle management." 
+      }
+    ],
+    "intermediate": [
+      { 
+        "topic": "Advanced Data Modeling", 
+        "concepts": ["Embedding vs Referencing", "One-to-Many & Many-to-Many", "Array & Nested Data"], 
+        "description": "Design efficient and scalable data models." 
+      },
+      { 
+        "topic": "Query Operators", 
+        "concepts": ["Comparison Operators", "Logical Operators", "Array Operators", "Regex"], 
+        "description": "Use advanced operators for flexible querying." 
+      },
+      { 
+        "topic": "Aggregation Framework", 
+        "concepts": ["$match", "$group", "$project", "$sort", "$lookup", "$unwind", "Pipelines"], 
+        "description": "Perform powerful data aggregations and transformations." 
+      },
+      { 
+        "topic": "Transactions", 
+        "concepts": ["Atomic Operations", "Multi-document Transactions", "Concurrency Control"], 
+        "description": "Understand how NoSQL systems handle transactions." 
+      },
+      { 
+        "topic": "Replication & Sharding", 
+        "concepts": ["Replica Sets", "Auto-sharding", "Partition Keys", "Consistency Levels"], 
+        "description": "Distribute and replicate data for scalability and availability." 
+      },
+      { 
+        "topic": "Consistency Models", 
+        "concepts": ["Strong Consistency", "Eventual Consistency", "Tunable Consistency", "Quorum Reads/Writes"], 
+        "description": "Learn the trade-offs in distributed data systems." 
+      },
+      { 
+        "topic": "Data Integrity & Validation", 
+        "concepts": ["Schema Validation", "Constraints", "Document Validation Rules"], 
+        "description": "Ensure correctness of data in schema-less systems." 
+      }
+    ],
+    "advanced": [
+      { 
+        "topic": "Performance Tuning", 
+        "concepts": ["Index Optimization", "Query Profiling", "Hotspot Mitigation"], 
+        "description": "Improve efficiency and performance of queries." 
+      },
+      { 
+        "topic": "Advanced Aggregations", 
+        "concepts": ["Faceted Search", "Bucketing", "Window Functions (MongoDB 5+)", "MapReduce"], 
+        "description": "Perform complex analytics inside the database." 
+      },
+      { 
+        "topic": "Data Distribution", 
+        "concepts": ["Partition Strategies", "Horizontal Scaling", "Data Locality"], 
+        "description": "Understand how data is distributed across nodes." 
+      },
+      { 
+        "topic": "Security", 
+        "concepts": ["Authentication", "Role-based Access Control", "Encryption at Rest & In Transit"], 
+        "description": "Secure data in NoSQL environments." 
+      },
+      { 
+        "topic": "Event-driven Patterns", 
+        "concepts": ["Change Streams", "Database Triggers", "Pub/Sub Integration"], 
+        "description": "Integrate NoSQL with event-driven architectures." 
+      },
+      { 
+        "topic": "Backup & Recovery", 
+        "concepts": ["Snapshots", "Incremental Backups", "Disaster Recovery Plans"], 
+        "description": "Implement backup and disaster recovery strategies." 
+      },
+      { 
+        "topic": "Polyglot Persistence", 
+        "concepts": ["Using Multiple Databases", "Choosing the Right Store", "Integration Patterns"], 
+        "description": "Design systems using both SQL and NoSQL together." 
+      }
+    ],
+    "expert": [
+      { 
+        "topic": "Distributed Systems Theory", 
+        "concepts": ["CAP Theorem in Practice", "Paxos & Raft", "Consensus Mechanisms"], 
+        "description": "Understand distributed system foundations of NoSQL databases." 
+      },
+      { 
+        "topic": "Hybrid Architectures", 
+        "concepts": ["SQL + NoSQL Integration", "HTAP Systems", "Hybrid Cloud Deployments"], 
+        "description": "Design systems combining multiple paradigms." 
+      },
+      { 
+        "topic": "Graph Databases", 
+        "concepts": ["Graph Queries (Cypher, Gremlin)", "Graph Traversals", "Graph Analytics"], 
+        "description": "Work with graph-based NoSQL systems for connected data." 
+      },
+      { 
+        "topic": "Time-series & IoT Databases", 
+        "concepts": ["InfluxDB", "Cassandra for IoT", "Retention Policies", "Downsampling"], 
+        "description": "Handle high-volume real-time and time-series data." 
+      },
+      { 
+        "topic": "Search & Analytics with NoSQL", 
+        "concepts": ["Elasticsearch", "Full-text Search", "Log Analysis"], 
+        "description": "Use NoSQL for advanced search and analytics workloads." 
+      },
+      { 
+        "topic": "Big Data & Streaming", 
+        "concepts": ["Hadoop Integration", "Spark with NoSQL", "Kafka + NoSQL Streaming"], 
+        "description": "Integrate NoSQL with big data and real-time processing systems." 
+      },
+      { 
+        "topic": "Global-scale NoSQL", 
+        "concepts": ["Multi-region Clusters", "Conflict Resolution", "Data Sovereignty"], 
+        "description": "Build systems that scale globally with resilience." 
+      },
+      { 
+        "topic": "Multi-model Databases", 
+        "concepts": ["Document + Graph", "Key-Value + Column", "ArangoDB", "Cosmos DB"], 
+        "description": "Leverage multi-model capabilities in advanced systems." 
+      }
+    ]
+  },
+  "tools": [
+    "MongoDB",
+    "Cassandra",
+    "Redis",
+    "CouchDB",
+    "Neo4j",
+    "Amazon DynamoDB",
+    "Elasticsearch",
+    "Firebase Realtime Database",
+    "Cosmos DB",
+    "ScyllaDB",
+    "ArangoDB",
+    "FaunaDB",
+    "HBase"
+  ],
+  "difficulty": "beginner"
+}, {
         title: "dbt (Data Build Tool) Roadmap",
         description: "Master dbt for transforming raw data into reliable, production-ready models using SQL and version control.",
         image: "https://cdn.simpleicons.org/dbt/0AF",
