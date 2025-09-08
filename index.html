@@ -822,7 +822,45 @@
         tools: ["Elasticsearch", "Kibana", "Logstash", "Filebeat", "Cerebro", "Postman", "Docker", "Kubernetes", "Beats", "Prometheus"],
         difficulty: "advanced"
       },
+
       {
+  title: "Kibana Roadmap",
+  description: "Master Kibana for data visualization, dashboarding, monitoring, and machine learning with Elasticsearch.",
+  image: "https://cdn.simpleicons.org/kibana/005571",
+  levels: {
+    beginner: [
+      { topic: "Introduction", concepts: ["What is Kibana?", "Role in Elastic Stack", "Kibana vs Elasticsearch", "Basic Setup", "Kibana Architecture"], description: "Understand Kibana’s purpose as a visualization and data exploration tool." },
+      { topic: "Interface Basics", concepts: ["Home Screen", "Navigation Bar", "Spaces", "User Preferences", "Dark/Light Mode"], description: "Get familiar with the Kibana UI and workspaces." },
+      { topic: "Discover", concepts: ["Kibana Query Language (KQL)", "Lucene Query Syntax", "Filters", "Time Picker", "Saved Searches"], description: "Explore and query Elasticsearch data interactively." },
+      { topic: "Visualizations Basics", concepts: ["Lens", "Bar/Line/Pie Charts", "Tables", "Maps", "Tag Cloud"], description: "Create simple visualizations for quick insights." },
+      { topic: "Data Views (Index Patterns)", concepts: ["Creating Data Views", "Field Management", "Scripted Fields", "Runtime Fields"], description: "Define how Kibana interprets and works with Elasticsearch indices." }
+    ],
+    intermediate: [
+      { topic: "Dashboards", concepts: ["Building Dashboards", "Dynamic Controls", "Drilldowns", "Linking Visualizations", "Export/Import Dashboards"], description: "Organize and share multiple visualizations in interactive dashboards." },
+      { topic: "Advanced Visualizations", concepts: ["TSVB (Time Series Visual Builder)", "Timelion", "Canvas", "Vega", "Markdown Widgets"], description: "Create advanced visualizations with flexible tools." },
+      { topic: "Dev Tools", concepts: ["Console for Elasticsearch Queries", "Inspect Queries", "Elasticsearch API Playground"], description: "Work directly with Elasticsearch from Kibana." },
+      { topic: "Data Management", concepts: ["Data Views vs Legacy Index Patterns", "Runtime Mappings", "Field Formatters", "Field Statistics"], description: "Refine how data is structured and presented." },
+      { topic: "Reporting", concepts: ["PDF Reports", "CSV Export", "Scheduled Reports", "Custom Branding"], description: "Generate and distribute reports from Kibana." }
+    ],
+    advanced: [
+      { topic: "Security Integration", concepts: ["Spaces Security", "Role-Based Access Control", "Dashboard-Only Mode", "Securing Visualizations"], description: "Manage data access and secure Kibana deployments." },
+      { topic: "Monitoring", concepts: ["Stack Monitoring", "Logs UI", "Metrics UI", "APM Integration"], description: "Use Kibana to monitor Elastic Stack and system performance." },
+      { topic: "Alerting & Actions", concepts: ["Rules", "Connectors", "Notification Channels (Email, Slack, Webhooks)", "Threshold & Metric Alerts"], description: "Automate responses to data-driven conditions." },
+      { topic: "Machine Learning Basics", concepts: ["Anomaly Detection", "Single Metric Jobs", "Multi-Metric Jobs", "Visualize ML Results"], description: "Apply ML features for anomaly detection and trend analysis." },
+      { topic: "Elastic Maps", concepts: ["Geo Data Visualization", "Coordinate Maps", "Region Maps", "Heatmaps"], description: "Work with location-based data in Kibana." }
+    ],
+    expert: [
+      { topic: "Advanced Machine Learning", concepts: ["Forecasting", "Outlier Detection", "Population Analysis", "Model Explainability"], description: "Leverage advanced ML features for predictive analytics." },
+      { topic: "Elastic Maps Deep Dive", concepts: ["Vector Tiles", "Custom Layers", "Real-Time Geo Data", "Geo-Shape Queries"], description: "Handle massive geospatial datasets with Kibana Maps." },
+      { topic: "Canvas Mastery", concepts: ["Workpads", "Expressions", "Dynamic Data", "Custom Branding"], description: "Build custom, pixel-perfect data presentations." },
+      { topic: "Search Experience", concepts: ["Query Tuning", "Synonym Sets in Kibana", "Analyzers Visualization", "Search UI (App Search/Workplace Search Integration)"], description: "Optimize search relevance and user experience." },
+      { topic: "Kibana Internals & Extensibility", concepts: ["Kibana Architecture", "Plugin Development", "Custom Integrations", "Extending Visualizations"], description: "Go under the hood to customize and extend Kibana." },
+      { topic: "Enterprise Operations", concepts: ["Scaling Kibana", "Multi-Tenancy with Spaces", "SAML/OIDC Integration", "High Availability Setup"], description: "Run Kibana at enterprise scale with secure, distributed setups." }
+    ]
+  },
+  tools: ["Kibana", "Elasticsearch", "Logstash", "Beats", "Elastic APM", "Canvas", "Prometheus", "Grafana", "Docker", "Kubernetes"],
+  difficulty: "intermediate"
+},  {
   "title": "NoSQL Roadmap",
   "description": "A structured path to master NoSQL databases from fundamentals to advanced distributed data management and analytics.",
   "image": "https://cdn.simpleicons.org/mongodb/47A248",
