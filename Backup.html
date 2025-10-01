@@ -1,0 +1,2384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Comprehensive Data Career Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+    :root {
+      --primary: #0af;
+      --primary-dark: #0088cc;
+      --dark-bg: #121212;
+      --light-bg: #f5f5f5;
+      --card-bg: #1e1e1e;
+      --card-bg-light: #fff;
+      --panel-bg: #1a1a1a;
+      --panel-bg-light: #fff;
+      --text-light: #f1f1f1;
+      --text-dark: #333;
+      --text-secondary: #ddd;
+      --text-secondary-light: #666;
+      --border-radius: 12px;
+      --transition: all 0.3s ease;
+      --shadow: 0 4px 15px rgba(0, 170, 255, 0.15);
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-light);
+      margin: 0;
+      padding: 20px;
+      transition: var(--transition);
+    }
+    body.light-mode {
+      background-color: var(--light-bg);
+      color: var(--text-dark);
+    }
+    body.light-mode .roadmap-card, body.light-mode .role-card {
+      background-color: var(--card-bg-light);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      color: var(--text-dark);
+    }
+    .header-container {
+      text-align: center;
+      margin-bottom: 30px;
+      animation: fadeIn 1s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      margin: 0;
+      font-weight: 700;
+      color: var(--primary);
+      text-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+      animation: glow 2s ease-in-out infinite alternate;
+      font-size: 2.8rem;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+      to { text-shadow: 0 0 15px rgba(0, 170, 255, 0.6); }
+    }
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 900px;
+      margin: 10px auto;
+    }
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1) rotate(20deg);
+      background-color: var(--primary-dark);
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0 30px;
+    }
+    .tab-btn {
+      padding: 10px 20px;
+      background: #2c2c2c;
+      color: #aaa;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .roadmap-card, .role-card {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .roadmap-card:hover, .role-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(0, 170, 255, 0.25);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 3px var(--primary));
+    }
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0;
+    }
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+    .card-section {
+      margin: 12px 0;
+      font-size: 0.9rem;
+    }
+    .section-title {
+      font-weight: 600;
+      color: #66c2ff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .section-title::before {
+      content: "→";
+      color: var(--primary);
+    }
+    .topic-list {
+      margin: 4px 0;
+      padding-left: 16px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .topic-item {
+      margin: 4px 0;
+    }
+    .topic-topic {
+      font-weight: 600;
+      color: #a0e7ff;
+    }
+    .topic-concepts {
+      font-style: italic;
+      color: #999;
+    }
+    .tools-section {
+      margin-top: 10px;
+      padding: 8px;
+      background-color: rgba(0, 170, 255, 0.1);
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+    .tools-section strong {
+      color: var(--primary);
+    }
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .tag {
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      background: rgba(0, 170, 255, 0.2);
+      color: #80d8ff;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    body.light-mode .tag {
+      background: #e0f7fa; color: #006064;
+    }
+    .salary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 0.85rem;
+    }
+    .salary-table th, .salary-table td {
+      border: 1px solid #333;
+      padding: 6px;
+      text-align: center;
+    }
+    body.light-mode .salary-table th, body.light-mode .salary-table td {
+      border-color: #ccc;
+    }
+    .salary-table th {
+      background-color: #2c2c2c;
+      color: var(--primary);
+    }
+    .salary-table tr:nth-child(even) {
+      background-color: #1e1e1e;
+    }
+    body.light-mode .salary-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .tips {
+      margin-top: 10px;
+      padding: 8px;
+      background-color: rgba(255, 255, 0, 0.1);
+      border-left: 3px solid #ffeb3b;
+      font-size: 0.85rem;
+      color: #ffeb3b;
+      border-radius: 0 4px 4px 0;
+    }
+    body.light-mode .tips {
+      background-color: #fff9c4;
+      color: #5d4037;
+      border-left-color: #fbc02d;
+    }
+    .experience-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 12px;
+      margin-right: 5px;
+      margin-bottom: 4px;
+    }
+    .entry-badge { background-color: #4a86e8; color: white; }
+    .mid-badge { background-color: #6aa84f; color: white; }
+    .senior-badge { background-color: #f1c232; color: #333; }
+    .lead-badge { background-color: #cc0000; color: white; }
+    .expert-badge { background-color: #8e7cc3; color: white; }
+    .difficulty-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 12px;
+      margin-right: 5px;
+      margin-bottom: 4px;
+    }
+    .beginner-badge { background-color: #4a86e8; color: white; }
+    .intermediate-badge { background-color: #6aa84f; color: white; }
+    .advanced-badge { background-color: #f1c232; color: #333; }
+    .expert-badge { background-color: #cc0000; color: white; }
+    .prerequisites {
+      font-size: 0.8rem;
+      color: #ff9966;
+      font-style: italic;
+      margin-top: 4px;
+    }
+    .filter-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      gap: 10px;
+      align-items: center;
+    }
+    .filter-select, .search-input {
+      padding: 10px;
+      background: #2c2c2c;
+      color: #aaa;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .filter-select:hover, .search-input:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .search-input {
+      width: 200px;
+      cursor: text;
+    }
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      h1 {
+        font-size: 2.2rem;
+      }
+      .filter-container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-container">
+    <h1>Comprehensive Data Career Dashboard</h1>
+    <p class="subtitle">Explore expanded skill roadmaps and job roles in data science, engineering, analytics, AI/ML, and emerging technologies.</p>
+  </div>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="roadmaps">Skill Roadmaps</button>
+    <button class="tab-btn" data-tab="roles">Job Roles</button>
+  </div>
+  <!-- Skill Roadmaps Panel -->
+  <div id="roadmaps" class="tab-content active">
+    <div class="filter-container">
+      <select id="difficultyFilter" class="filter-select">
+        <option value="all">All Difficulties</option>
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+      </select>
+      <select id="searchSelect" class="filter-select">
+        <!-- Options will be populated dynamically -->
+      </select>
+    </div>
+    <div class="grid" id="roadmapsGrid"></div>
+  </div>
+  
+  <!-- Job Roles Panel -->
+  <div id="roles" class="tab-content">
+    <div class="filter-container">
+      <select id="roleSearchSelect" class="filter-select">
+        <!-- Options will be populated dynamically -->
+      </select>
+    </div>
+    <div class="grid" id="rolesGrid"></div>
+  </div>
+  <script>
+    // === EXPANDED SKILL ROADMAPS DATA ===
+    const roadmaps = [
+      {
+        title: "SQL Roadmap",
+        description: "A structured path to master SQL from basics to advanced techniques for data management and analysis.",
+        image: "https://cdn.simpleicons.org/mysql/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is SQL?", "RDBMS vs DBMS", "Tables, Rows, Columns", "SQL Standards"], description: "Learn the fundamentals of SQL and relational databases." },
+            { topic: "Data Types", concepts: ["INT", "VARCHAR", "DATE", "BOOLEAN", "DECIMAL", "TEXT"], description: "Understand SQL data types for storing various kinds of data." },
+            { topic: "Basic Queries", concepts: ["SELECT", "FROM", "WHERE", "ORDER BY", "LIMIT / TOP", "DISTINCT"], description: "Write basic SQL queries to retrieve data." },
+            { topic: "Filtering", concepts: ["AND, OR, NOT", "BETWEEN", "IN", "LIKE", "IS NULL", "IS NOT NULL"], description: "Filter query results using various conditions." },
+            { topic: "Aliases", concepts: ["Column alias (AS)", "Table alias"], description: "Use aliases to simplify and clarify SQL queries." },
+            { topic: "Aggregate Functions", concepts: ["COUNT", "SUM", "AVG", "MIN / MAX", "STDEV", "VAR"], description: "Perform calculations on data sets using aggregates." },
+            { topic: "Grouping", concepts: ["GROUP BY", "HAVING"], description: "Group data for summarized reporting." }
+          ],
+          intermediate: [
+            { topic: "Table Relationships", concepts: ["Primary & Foreign Keys", "One-to-Many", "Many-to-Many", "Referential Integrity"], description: "Understand and implement table relationships." },
+            { topic: "Joins", concepts: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN", "CROSS JOIN", "SELF JOIN", "NATURAL JOIN"], description: "Combine data from multiple tables using joins." },
+            { topic: "Subqueries", concepts: ["Scalar", "Correlated", "Subqueries in WHERE / FROM / SELECT", "EXISTS"], description: "Use nested queries for complex data retrieval." },
+            { topic: "Set Operations", concepts: ["UNION", "UNION ALL", "INTERSECT", "EXCEPT"], description: "Combine or compare result sets with set operations." },
+            { topic: "Data Manipulation", concepts: ["INSERT", "UPDATE", "DELETE", "UPSERT/MERGE"], description: "Modify data within tables." },
+            { topic: "Constraints", concepts: ["NOT NULL", "UNIQUE", "DEFAULT", "CHECK", "FOREIGN KEY"], description: "Enforce data integrity with constraints." },
+            { topic: "Conditional Logic", concepts: ["CASE Statements", "COALESCE", "NULLIF"], description: "Implement conditional logic in queries." },
+            { topic: "Functions", concepts: ["String Functions: CONCAT, SUBSTRING, TRIM, LENGTH, UPPER, LOWER", "Date Functions: NOW(), DATE(), DATEDIFF(), DATEADD()", "Mathematical Functions"], description: "Use built-in functions for string and date manipulation." }
+          ],
+          advanced: [
+            { topic: "Views", concepts: ["Creating and Using Views", "Materialized Views", "Indexed Views"], description: "Create virtual tables for simplified querying." },
+            { topic: "CTEs", concepts: ["Non-recursive", "Recursive", "Multiple CTEs"], description: "Use Common Table Expressions for modular queries." },
+            { topic: "Window Functions", concepts: ["ROW_NUMBER()", "RANK(), DENSE_RANK()", "LEAD(), LAG()", "PARTITION BY", "NTILE()", "CUME_DIST()"], description: "Perform advanced calculations across rows." },
+            { topic: "Indexes & Performance", concepts: ["Creating Indexes", "Clustered vs Non-clustered", "Composite Indexes", "EXPLAIN / ANALYZE", "Query Optimization"], description: "Optimize query performance with indexes." },
+            { topic: "Stored Procedures", concepts: ["Creating and Managing", "Parameters", "Error Handling"], description: "Automate repetitive tasks with stored procedures." },
+            { topic: "Triggers", concepts: ["Event-driven Logic", "INSERT/UPDATE/DELETE Triggers", "INSTEAD OF Triggers"], description: "Execute logic automatically on database events." },
+            { topic: "Transactions", concepts: ["BEGIN", "COMMIT", "ROLLBACK", "SAVEPOINT", "ACID Properties"], description: "Ensure data consistency with transactions." },
+            { topic: "Error Handling", concepts: ["TRY/CATCH (DBMS-specific)", "RAISERROR/THROW"], description: "Manage errors in SQL scripts." },
+            { topic: "Normalization", concepts: ["1NF, 2NF, 3NF, BCNF", "Denormalization", "Trade-offs"], description: "Design efficient and normalized databases." },
+            { topic: "Permissions", concepts: ["GRANT", "REVOKE", "Roles", "Schemas"], description: "Control access with permissions." },
+            { topic: "JSON in SQL", concepts: ["Querying JSON fields", "JSON Functions", "Storing JSON"], description: "Work with JSON data in SQL." },
+            { topic: "Temporary Tables", concepts: ["Creating and Using Temporary Tables", "# vs ## tables"], description: "Use temporary tables for intermediate data storage." },
+            { topic: "Pivot/Unpivot", concepts: ["Data transformation techniques", "Dynamic Pivoting"], description: "Transform data for reporting purposes." },
+            { topic: "Advanced Analytics", concepts: ["Time Series Analysis", "Statistical Functions", "Geospatial Queries"], description: "Perform advanced analytical operations." }
+          ],
+          expert: [
+            { topic: "Database Design", concepts: ["Star Schema", "Snowflake Schema", "Data Vault", "Kimball vs Inmon"], description: "Design enterprise-level data models." },
+            { topic: "Replication & High Availability", concepts: ["Master-Slave", "Multi-master", "Failover Clustering"], description: "Ensure database reliability and uptime." },
+            { topic: "Partitioning", concepts: ["Horizontal", "Vertical", "List", "Range", "Hash"], description: "Scale databases across multiple partitions." },
+            { topic: "Advanced Security", concepts: ["Encryption at Rest", "TDE", "Row-Level Security", "Dynamic Data Masking"], description: "Implement enterprise security measures." },
+            { topic: "Performance Tuning", concepts: ["Query Plan Analysis", "Index Tuning", "Statistics Management"], description: "Optimize database performance at scale." },
+            { topic: "Distributed SQL", concepts: ["Sharding", "Federated Queries", "Cross-Database Joins"], description: "Work with distributed database systems." },
+            { topic: "NoSQL Integration", concepts: ["Polyglot Persistence", "SQL on NoSQL", "Hybrid Architectures"], description: "Integrate SQL with NoSQL databases." }
+          ]
+        },
+        tools: ["MySQL Workbench", "PostgreSQL", "SQL Server Management Studio", "DBeaver", "Oracle SQL Developer", "MongoDB Compass", "SQLite Studio"],
+        difficulty: "beginner"
+      },
+      {
+        title: "Python Roadmap",
+        description: "Master Python programming from basics to advanced data science and automation.",
+        image: "https://cdn.simpleicons.org/python/0AF",
+        levels: {
+          beginner: [
+            { topic: "Variables & Data Types", concepts: ["int", "str", "bool", "float", "complex", "type()"], description: "Store and manipulate different kinds of data." },
+            { topic: "Basic I/O", concepts: ["print()", "input()", "comments", "docstrings"], description: "Interact with users and add code documentation." },
+            { topic: "Control Flow", concepts: ["if", "elif", "else", "Nested conditions", "ternary operator"], description: "Write logic to control the flow of your program." },
+            { topic: "Loops", concepts: ["for", "while", "break", "continue", "range()", "enumerate()", "zip()"], description: "Repeat tasks efficiently and loop through data structures." },
+            { topic: "Functions", concepts: ["def", "Parameters", "Return values", "Scope", "*args", "**kwargs", "lambda"], description: "Organize code into reusable blocks with custom behavior." }
+          ],
+          intermediate: [
+            { topic: "Data Structures", concepts: ["Lists", "Tuples", "Dictionaries", "Sets", "NamedTuples", "Dataclasses"], description: "Store and organize data efficiently." },
+            { topic: "File Handling", concepts: ["Reading/Writing files", "CSV", "JSON", "Pickle", "Context Managers"], description: "Work with external data files." },
+            { topic: "Exception Handling", concepts: ["try", "except", "finally", "raise", "Custom exceptions", "assert"], description: "Handle errors gracefully and write more reliable code." },
+            { topic: "Modules & Packages", concepts: ["import", "Creating your own modules", "__name__ == '__main__'", "pip", "virtual environments"], description: "Organize code into reusable and maintainable components." },
+            { topic: "Object-Oriented Programming (OOP)", concepts: ["class", "__init__", "self", "Methods", "Inheritance", "super()", "Encapsulation", "Polymorphism"], description: "Build complex programs using real-world modeling concepts." },
+            { topic: "Lambda & Functional Tools", concepts: ["lambda", "map()", "filter()", "reduce()", "functools"], description: "Write concise, efficient data-processing code." },
+            { topic: "Working with JSON & CSV", concepts: ["json", "csv libraries", "Parsing & writing", "pandas integration"], description: "Read and write structured data formats for APIs and datasets." }
+          ],
+          advanced: [
+            { topic: "Multithreading & Multiprocessing", concepts: ["threading", "multiprocessing", "GIL", "Concurrency", "asyncio", "async/await"], description: "Speed up tasks with parallel processing and thread management." },
+            { topic: "Advanced OOP & Design Patterns", concepts: ["SOLID principles", "Singleton", "Factory", "Observer", "Decorator", "Strategy"], description: "Design scalable and maintainable applications using proven patterns." },
+            { topic: "Decorators", concepts: ["@decorator", "Function modification", "Class decorators", "Parameterized decorators"], description: "Enhance functions with reusable logic." },
+            { topic: "Generators", concepts: ["yield", "Memory-efficient iteration", "generator expressions", "coroutines"], description: "Create iterators that save memory." },
+            { topic: "Context Managers", concepts: ["with statement", "Custom managers", "contextlib"], description: "Manage resources safely and automatically." },
+            { topic: "Metaprogramming", concepts: ["Decorators", "Metaclasses", "Descriptors", "Duck Typing"], description: "Write code that manipulates code." },
+            { topic: "Memory Management", concepts: ["Garbage Collection", "Reference Counting", "Memory Profiling"], description: "Understand and optimize Python's memory usage." }
+          ],
+          expert: [
+            { topic: "Logging", concepts: ["Logging levels", "basicConfig", "Writing logs to file", "RotatingFileHandler"], description: "Track application behavior and debug production issues." },
+            { topic: "Profiling & Optimization", concepts: ["timeit", "cProfile", "Big-O basics", "Memory usage", "PyPy", "Cython"], description: "Identify performance bottlenecks and write efficient code." },
+            { topic: "Working with APIs", concepts: ["requests", "Parsing JSON", "Error handling", "Real API calls", "GraphQL", "RESTful design"], description: "Fetch and process data from web APIs for automation and data pipelines." },
+            { topic: "C Extensions", concepts: ["ctypes", "Cython", "C API", "Performance optimization"], description: "Extend Python with C code for performance." },
+            { topic: "Distributed Computing", concepts: ["Celery", "Ray", "Dask", "Apache Beam"], description: "Scale Python applications across multiple machines." }
+          ]
+        },
+        tools: ["PyCharm", "Jupyter Notebook", "VS Code", "Git", "Docker", "Flask", "FastAPI", "Streamlit", "Dash", "JupyterLab"],
+        difficulty: "beginner"
+      },
+      {
+        title: "Power BI Roadmap",
+        description: "A comprehensive guide to mastering Power BI for data visualization and business intelligence.",
+        image: "https://img.icons8.com/fluency/96/microsoft.png",
+        levels: {
+          beginner: [
+            { topic: "Power BI Overview", concepts: ["What is Power BI", "Components", "Use Cases", "Licensing"], description: "Understand what Power BI is and where it fits in business intelligence." },
+            { topic: "Installing Power BI", concepts: ["Power BI Desktop", "Power BI Service", "Mobile App"], description: "Learn how to install and set up Power BI Desktop for development." },
+            { topic: "Connecting to Data", concepts: ["Excel", "CSV", "SQL Server", "Web", "APIs", "SharePoint"], description: "Learn how to import and connect various data sources." },
+            { topic: "Data Loading & Preview", concepts: ["Navigator pane", "Selecting tables/sheets", "Query folding"], description: "Understand how to load and preview data before modeling." },
+            { topic: "Power Query Editor Basics", concepts: ["Remove columns", "Change data types", "Filter rows", "Sort", "Rename"], description: "Use Power Query to shape and clean data." },
+            { topic: "Basic Visualizations", concepts: ["Bar", "Pie", "Line", "Cards", "Tables", "Matrix", "Gauges"], description: "Learn to create common visuals for dashboards and reports." },
+            { topic: "Working with Fields", concepts: ["Drag & drop fields", "Axes", "Values", "Legend", "Tooltips"], description: "Understand field well usage in visualizations." },
+            { topic: "Publishing to Power BI Service", concepts: ["Publish", "Workspaces", "Dashboard creation", "Sharing"], description: "Share reports to the cloud-based Power BI service." }
+          ],
+          intermediate: [
+            { topic: "Data Model Design", concepts: ["Relationships", "Star vs snowflake schema", "Active/inactive", "Cross-filter direction"], description: "Structure your data model for optimal performance and analysis." },
+            { topic: "Managing Relationships", concepts: ["One-to-many", "Many-to-one", "Cardinality", "Bidirectional filtering"], description: "Create and troubleshoot table relationships." },
+            { topic: "Introduction to DAX", concepts: ["Calculated columns", "Measures", "Syntax", "Evaluation context"], description: "Write DAX formulas for custom calculations." },
+            { topic: "Common DAX Functions", concepts: ["SUM()", "COUNT()", "AVERAGE()", "IF()", "SWITCH()", "CALCULATE()"], description: "Perform basic aggregations and logic-based operations." },
+            { topic: "Time Intelligence in DAX", concepts: ["TOTALYTD()", "DATEADD()", "SAMEPERIODLASTYEAR()", "DATESBETWEEN()"], description: "Create time-based metrics like YOY and YTD analysis." },
+            { topic: "Data Transformation (Power Query)", concepts: ["Merge", "Append", "Group by", "Pivot/Unpivot", "Conditional columns"], description: "Use Power Query to clean, reshape, and consolidate data sources." },
+            { topic: "Drillthrough & Tooltips", concepts: ["Report page tooltips", "Detailed drillthrough pages", "Drillthrough filters"], description: "Add depth and interactivity to visual reports." },
+            { topic: "Bookmarks & Selection Pane", concepts: ["Bookmarks", "Toggle views", "Storytelling", "Navigation"], description: "Create dynamic, interactive reports for presentations." }
+          ],
+          advanced: [
+            { topic: "Advanced DAX Functions", concepts: ["CALCULATE()", "FILTER()", "ALL()", "VALUES()", "RELATED()", "EARLIER()"], description: "Write more powerful and context-sensitive DAX measures." },
+            { topic: "Row-Level Security (RLS)", concepts: ["Roles", "DAX filters", "Dynamic RLS", "Username() function"], description: "Secure data access for different users." },
+            { topic: "Performance Optimization", concepts: ["DAX optimization", "Model size", "Performance analyzer", "VertiPaq engine"], description: "Improve report responsiveness and resource efficiency." },
+            { topic: "Custom Visuals", concepts: ["Import from AppSource", "Use cases", "Developing custom visuals"], description: "Enhance reports with third-party visuals." },
+            { topic: "Advanced Power Query M", concepts: ["Custom functions", "M language basics", "Error handling", "List functions"], description: "Write custom data transformation logic in M." },
+            { topic: "Paginated Reports", concepts: ["Power BI Report Builder", "Formatted tables", "Export to PDF"], description: "Generate printable, pixel-perfect reports." },
+            { topic: "Drill Down & Hierarchies", concepts: ["Creating hierarchies", "Drill up/down", "Expand/collapse"], description: "Add intuitive navigation to complex datasets." },
+            { topic: "Themes & Branding", concepts: ["JSON themes", "Custom color palettes", "Corporate branding"], description: "Maintain consistent branding across reports." }
+          ],
+          expert: [
+            { topic: "Power BI Service Deep Dive", concepts: ["Workspaces", "Apps", "Sharing", "Data refresh", "Capacity metrics"], description: "Manage deployments and dataflows in production." },
+            { topic: "Power BI Gateway", concepts: ["On-premises data access", "Scheduled refresh", "Personal vs Enterprise"], description: "Bridge on-prem data with Power BI service securely." },
+            { topic: "Dataflows", concepts: ["Reusable ETL pipelines", "Power Query Online", "Computed entities"], description: "Centralize data transformations for consistency across reports." },
+            { topic: "Integration with Excel, Teams, SharePoint", concepts: ["Analyze in Excel", "Embedding", "Teams tabs", "SharePoint integration"], description: "Collaborate and distribute reports effectively." },
+            { topic: "Power Automate Integration", concepts: ["Automate alerts", "Report sharing", "Flows", "Power Apps"], description: "Add workflow automation triggered by data changes." },
+            { topic: "Power BI REST API & Dev", concepts: ["Embed APIs", "Refresh APIs", "Custom dev tools", "Power BI CLI"], description: "Automate and embed Power BI into custom applications." },
+            { topic: "AI Insights", concepts: ["Quick Insights", "Decomposition Tree", "Key Influencers", "Anomaly Detection"], description: "Leverage built-in AI capabilities." },
+            { topic: "Natural Language Q&A", concepts: ["Ask a question", "Q&A visual", "Semantic model"], description: "Enable natural language querying of data." }
+          ]
+        },
+        tools: ["Power BI Desktop", "DAX Studio", "Power BI Service", "Power Query", "Tabular Editor", "Azure", "Power Automate", "Power Apps"],
+        difficulty: "beginner"
+      },
+      {
+        title: "Linux Roadmap",
+        description: "Master Linux command line, system administration, and automation for data engineering and DevOps.",
+        image: "https://cdn.simpleicons.org/linux/0AF",
+        levels: {
+          beginner: [
+            { topic: "File System", concepts: ["cd", "ls", "pwd", "mkdir", "touch", "tree"], description: "Navigate and manage files and directories." },
+            { topic: "File Operations", concepts: ["cp", "mv", "rm", "cat", "less", "head", "tail"], description: "Copy, move, delete, and view files." },
+            { topic: "Permissions", concepts: ["chmod", "chown", "rwx", "umask", "sticky bit"], description: "Control access to files and directories." },
+            { topic: "Networking Basics", concepts: ["ping", "netstat", "ifconfig", "curl", "wget", "ssh"], description: "Perform basic network diagnostics." },
+            { topic: "Process Management", concepts: ["ps", "top", "kill", "nice", "bg", "fg"], description: "Monitor and control running processes." }
+          ],
+          intermediate: [
+            { topic: "Text Processing", concepts: ["grep", "awk", "sed", "cut", "sort", "uniq"], description: "Process and manipulate text data efficiently." },
+            { topic: "Pipes & Redirection", concepts: ["|", ">", ">>", "<", "tee", "xargs"], description: "Combine commands and redirect input/output." },
+            { topic: "Package Management", concepts: ["apt", "yum", "dnf", "Installing software", "repositories"], description: "Install and manage software packages." },
+            { topic: "User Management", concepts: ["useradd", "usermod", "passwd", "sudo", "groups", "visudo"], description: "Manage users and permissions." },
+            { topic: "Shell Scripting", concepts: ["Bash scripts", "Variables", "Loops", "Conditionals", "Functions"], description: "Automate tasks with shell scripts." },
+            { topic: "System Monitoring", concepts: ["htop", "vmstat", "iostat", "dmesg", "journalctl"], description: "Monitor system performance and logs." }
+          ],
+          advanced: [
+            { topic: "Cron Jobs", concepts: ["crontab", "Scheduling tasks", "anacron"], description: "Automate recurring tasks with cron." },
+            { topic: "Networking Advanced", concepts: ["ssh", "scp", "rsync", "nmap", "tcpdump", "netcat"], description: "Manage remote connections and file transfers." },
+            { topic: "File Systems", concepts: ["mount", "umount", "LVM", "RAID", "ext4", "xfs"], description: "Manage disk partitions and file systems." },
+            { topic: "Security Basics", concepts: ["firewall-cmd", "ufw", "SELinux basics", "fail2ban"], description: "Implement basic system security measures." },
+            { topic: "Kernel Basics", concepts: ["Kernel modules", "modprobe", "Kernel parameters", "/proc filesystem"], description: "Understand and configure the Linux kernel." }
+          ],
+          expert: [
+            { topic: "Advanced Security", concepts: ["AppArmor", "Auditd", "Intrusion detection", "SELinux policies"], description: "Implement advanced security practices." },
+            { topic: "Containerization", concepts: ["Docker", "Podman", "containerd", "OCI"], description: "Run applications in isolated containers." },
+            { topic: "System Tuning", concepts: ["sysctl", "ulimit", "I/O scheduler", "network tuning"], description: "Optimize system performance." },
+            { topic: "Cluster Management", concepts: ["Pacemaker", "Corosync", "DRBD"], description: "Manage high-availability clusters." },
+            { topic: "Virtualization", concepts: ["KVM", "QEMU", "libvirt", "Vagrant"], description: "Run virtual machines on Linux." }
+          ]
+        },
+        tools: ["Ubuntu", "CentOS", "VS Code", "Terminal", "Docker", "SSH", "Ansible", "Terraform"],
+        difficulty: "intermediate"
+      },
+      {
+        title: "Git Roadmap",
+        description: "Learn Git for version control, collaboration, and managing code in data science and software projects.",
+        image: "https://cdn.simpleicons.org/git/0AF",
+        levels: {
+          beginner: [
+            { topic: "Basics", concepts: ["init", "clone", "status", "log", "diff"], description: "Initialize and inspect repositories." },
+            { topic: "Staging & Committing", concepts: ["add", "commit", "message", "amend"], description: "Save changes to version history." },
+            { topic: "Branching", concepts: ["branch", "checkout", "switch", "HEAD"], description: "Isolate work in separate branches." },
+            { topic: "Merging", concepts: ["merge", "fast-forward", "recursive", "merge conflicts"], description: "Combine changes from different branches." }
+          ],
+          intermediate: [
+            { topic: "Remote Repositories", concepts: ["push", "pull", "fetch", "origin", "upstream"], description: "Sync with remote repositories like GitHub." },
+            { topic: "Stashing", concepts: ["git stash", "git stash apply", "Managing changes", "git stash pop"], description: "Temporarily save changes without committing." },
+            { topic: "Rebasing", concepts: ["git rebase", "Interactive rebase", "squash", "reword"], description: "Rewrite commit history for cleaner workflows." },
+            { topic: "Undoing Changes", concepts: ["git reset", "git revert", "git checkout", "reflog"], description: "Undo or modify commits and changes." },
+            { topic: "Gitignore", concepts: [".gitignore file", "Patterns", "Ignoring files", "global gitignore"], description: "Exclude unnecessary files from version control." }
+          ],
+          advanced: [
+            { topic: "Tags", concepts: ["git tag", "Annotated vs Lightweight", "Signed tags"], description: "Mark specific commits as releases." },
+            { topic: "Submodules", concepts: ["Adding", "Updating", "Cloning", "Nested submodules"], description: "Include other repos as subdirectories." },
+            { topic: "Hooks", concepts: ["pre-commit", "post-merge", "Custom scripts", "Server-side hooks"], description: "Run scripts automatically during Git events." },
+            { topic: "Reflog", concepts: ["Recovering lost commits", "git reflog", "HEAD@{n}"], description: "Recover from mistakes using the reference log." },
+            { topic: "Workflows", concepts: ["Git Flow", "GitHub Flow", "Trunk-based development"], description: "Adopt branching strategies for team collaboration." }
+          ],
+          expert: [
+            { topic: "Advanced Rebasing", concepts: ["git rebase -i", "autosquash", "exec"], description: "Master interactive rebase for complex history rewriting." },
+            { topic: "Patch Files", concepts: ["git format-patch", "git am", "email workflows"], description: "Share changes as patch files." },
+            { topic: "Subtree Merging", concepts: ["git subtree", "Merging repositories"], description: "Alternative to submodules for including external code." },
+            { topic: "Git Internals", concepts: ["Object model", "Pack files", "Refs", "Plumbing commands"], description: "Understand Git's underlying architecture." },
+            { topic: "Performance", concepts: ["git gc", "git repack", "shallow clones"], description: "Optimize large repositories." }
+          ]
+        },
+        tools: ["GitHub", "GitLab", "VS Code", "Git Bash", "SourceTree", "GitHub Desktop", "Bitbucket"],
+        difficulty: "beginner"
+      },
+      
+      {
+        title: "Apache Spark Roadmap",
+        description: "Master Apache Spark for large-scale data processing and analytics using Python (PySpark) or Scala.",
+        image: "https://cdn.simpleicons.org/apache/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction to Spark", concepts: ["What is Spark?", "Spark vs Hadoop", "Spark Ecosystem", "Use Cases"], description: "Understand Spark's role in big data." },
+            { topic: "RDD Basics", concepts: ["Resilient Distributed Datasets", "Transformations & Actions", "Lazy evaluation"], description: "Learn the foundational data structure in Spark." },
+            { topic: "Spark SQL", concepts: ["DataFrames", "SQL queries in Spark", "Catalyst Optimizer"], description: "Use structured data processing with Spark SQL." },
+            { topic: "Setup & Local Mode", concepts: ["PySpark installation", "Jupyter + Spark", "Spark Standalone"], description: "Run Spark locally for development." }
+          ],
+          intermediate: [
+            { topic: "DataFrame API", concepts: ["Filtering", "Joins", "Aggregations", "Window functions", "UDFs"], description: "Process structured data efficiently." },
+            { topic: "Optimization", concepts: ["Caching", "Partitioning", "Lazy evaluation", "Broadcast variables"], description: "Improve performance of Spark jobs." },
+            { topic: "Working with File Formats", concepts: ["Parquet", "ORC", "JSON", "CSV", "Avro"], description: "Read and write efficient data formats." },
+            { topic: "Integration with Pandas", concepts: ["pandas UDFs", "Koalas", "Arrow optimization"], description: "Bridge Spark and Python data workflows." }
+          ],
+          advanced: [
+            { topic: "Streaming", concepts: ["Structured Streaming", "Event time", "Watermarking", "Triggers"], description: "Process real-time data streams." },
+            { topic: "Machine Learning (MLlib)", concepts: ["Classification", "Clustering", "Regression", "Feature Engineering"], description: "Apply ML at scale using Spark." },
+            { topic: "Cluster Mode", concepts: ["Standalone", "YARN", "Kubernetes", "Mesos"], description: "Deploy Spark on clusters." },
+            { topic: "Performance Tuning", concepts: ["Shuffle partitions", "Broadcast joins", "Memory tuning", "Skew handling"], description: "Optimize large-scale workloads." }
+          ],
+          expert: [
+            { topic: "Custom Connectors", concepts: ["Kafka integration", "Delta Lake", "Iceberg", "Hudi"], description: "Extend Spark for advanced sources." },
+            { topic: "Monitoring & Debugging", concepts: ["Spark UI", "Logging", "Metrics", "Event Log"], description: "Troubleshoot production jobs." },
+            { topic: "Security", concepts: ["Authentication", "Encryption", "ACLs", "Kerberos"], description: "Secure Spark deployments." },
+            { topic: "Graph Processing (GraphX)", concepts: ["Graph algorithms", "Pregel API", "PageRank"], description: "Analyze graph data at scale." },
+            { topic: "Spark Internals", concepts: ["DAG Scheduler", "Task Scheduler", "Shuffle Manager"], description: "Understand Spark's execution engine." }
+          ]
+        },
+        tools: ["PySpark", "Databricks", "Spark UI", "Delta Lake", "Kafka", "Hadoop", "Jupyter", "Scala", "Zeppelin", "Alluxio"],
+        difficulty: "advanced"
+      },
+      {
+  "title": "DSA Roadmap for Data Science",
+  "description": "Master data structures, algorithms, and mathematical foundations to build efficient and scalable data science solutions.",
+  "image": "https://cdn.simpleicons.org/algorithm/000000",
+  "levels": {
+    "beginner": [
+      {
+        "topic": "Introduction to Programming & DSA",
+        "concepts": ["What is an algorithm?", "Time and Space Complexity", "Big O Notation", "Recursion Basics"],
+        "description": "Understand algorithm fundamentals and how to analyze efficiency."
+      },
+      {
+        "topic": "Basic Data Structures",
+        "concepts": ["Arrays", "Linked Lists", "Stacks", "Queues"],
+        "description": "Learn to organize and manipulate data efficiently."
+      },
+      {
+        "topic": "Sorting and Searching",
+        "concepts": ["Bubble Sort", "Selection Sort", "Insertion Sort", "Binary Search"],
+        "description": "Implement basic sorting and searching algorithms."
+      },
+      {
+        "topic": "Mathematical Foundations",
+        "concepts": ["Set Theory", "Probability Basics", "Statistics Introduction"],
+        "description": "Build mathematical intuition for data analysis."
+      }
+    ],
+    "intermediate": [
+      {
+        "topic": "Advanced Data Structures",
+        "concepts": ["Hash Tables", "Heaps", "Trees (Binary, BST)", "Graphs"],
+        "description": "Solve problems requiring structured data storage and access."
+      },
+      {
+        "topic": "Dynamic Programming & Greedy",
+        "concepts": ["Memoization", "Tabulation", "Knapsack Problem", "Activity Selection"],
+        "description": "Optimize solutions using advanced algorithmic techniques."
+      },
+      {
+        "topic": "Graph Algorithms",
+        "concepts": ["DFS", "BFS", "Shortest Path Algorithms (Dijkstra, Bellman-Ford)", "Topological Sort"],
+        "description": "Work with networks and relationships between entities."
+      },
+      {
+        "topic": "String Manipulation",
+        "concepts": ["Pattern Matching", "KMP Algorithm", "Rabin-Karp", "Regular Expressions"],
+        "description": "Analyze and process textual data."
+      }
+    ],
+    "advanced": [
+      {
+        "topic": "Mathematics for Data Science",
+        "concepts": ["Linear Algebra", "Probability Distributions", "Optimization Techniques", "Numerical Methods"],
+        "description": "Use mathematical tools to interpret and model data."
+      },
+      {
+        "topic": "Machine Learning Algorithms",
+        "concepts": ["Regression", "Classification", "Clustering", "Dimensionality Reduction"],
+        "description": "Apply algorithms for prediction and pattern recognition."
+      },
+      {
+        "topic": "Computational Geometry & Design",
+        "concepts": ["Convex Hull", "Nearest Neighbors", "Spatial Partitioning"],
+        "description": "Solve geometric problems in data contexts."
+      },
+      {
+        "topic": "Backtracking & Divide and Conquer",
+        "concepts": ["N-Queens Problem", "Subset Sum", "Merge Sort", "Quick Sort"],
+        "description": "Explore recursive problem-solving techniques."
+      }
+    ],
+    "expert": [
+      {
+        "topic": "Advanced Graph Theory",
+        "concepts": ["Network Flow", "Minimum Spanning Trees", "Graph Coloring"],
+        "description": "Solve complex network optimization problems."
+      },
+      {
+        "topic": "Algorithm Design Patterns",
+        "concepts": ["Sliding Window", "Two Pointers", "Bit Manipulation", "Meet-in-the-Middle"],
+        "description": "Recognize and apply efficient algorithmic strategies."
+      },
+      {
+        "topic": "Scalable Systems & Big Data",
+        "concepts": ["MapReduce", "Parallel Algorithms", "Approximation Algorithms"],
+        "description": "Design algorithms that scale with data size."
+      },
+      {
+        "topic": "Deep Learning Foundations",
+        "concepts": ["Neural Networks", "Backpropagation", "Activation Functions", "Optimization Algorithms"],
+        "description": "Develop deep learning models for complex data patterns."
+      }
+    ]
+  },
+  "tools": ["Python", "NumPy", "Pandas", "SciPy", "scikit-learn", "TensorFlow", "PyTorch", "Jupyter Notebook"],
+  "difficulty": "advanced"
+},
+      {
+        title: "Apache Kafka Roadmap",
+        description: "Learn Kafka for building real-time data streaming and event-driven architectures.",
+        image: "https://cdn.simpleicons.org/apachekafka/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is Kafka?", "Publish-Subscribe Model", "Use Cases", "Event-Driven Architecture"], description: "Understand Kafka's role in streaming." },
+            { topic: "Core Concepts", concepts: ["Topics", "Producers", "Consumers", "Brokers", "Partitions"], description: "Learn the basic building blocks." },
+            { topic: "Installation", concepts: ["Local setup", "ZooKeeper vs KRaft", "Docker"], description: "Run Kafka locally for learning." },
+            { topic: "CLI Basics", concepts: ["kafka-topics.sh", "kafka-console-producer/consumer", "kafka-configs.sh"], description: "Use command-line tools to interact with Kafka." }
+          ],
+          intermediate: [
+            { topic: "Producers & Consumers", concepts: ["Serialization", "Acknowledgments", "Offset management", "Consumer Groups"], description: "Build reliable applications." },
+            { topic: "Partitions & Replication", concepts: ["Partition keys", "Replication factor", "Fault tolerance", "ISR"], description: "Scale and secure your topics." },
+            { topic: "Consumer Groups", concepts: ["Load balancing", "Rebalancing", "Sticky Assignor"], description: "Distribute message consumption." },
+            { topic: "Error Handling", concepts: ["Retries", "Dead Letter Queues", "Poison Pill messages"], description: "Handle failures gracefully." }
+          ],
+          advanced: [
+            { topic: "Kafka Streams", concepts: ["Stream processing", "KStream vs KTable", "State Stores", "Windowing"], description: "Process data in real time." },
+            { topic: "ksqlDB", concepts: ["SQL for Kafka", "Event streaming queries", "Push vs Pull queries"], description: "Query streams using SQL." },
+            { topic: "Connectors", concepts: ["Kafka Connect", "Source/Sink connectors", "Debezium", "JDBC Connector"], description: "Integrate with databases and cloud services." },
+            { topic: "Schema Registry", concepts: ["Avro", "Schema evolution", "Compatibility", "Protobuf"], description: "Manage data formats safely." }
+          ],
+          expert: [
+            { topic: "Security", concepts: ["SSL", "SASL", "ACLs", "mTLS"], description: "Secure Kafka clusters." },
+            { topic: "Monitoring", concepts: ["Prometheus", "Grafana", "JMX metrics", "Burrow"], description: "Track performance and health." },
+            { topic: "Scaling & Tuning", concepts: ["Broker tuning", "Network", "Disk I/O", "ZooKeeper tuning"], description: "Optimize for high throughput." },
+            { topic: "Multi-Datacenter", concepts: ["MirrorMaker", "Active-Active", "Active-Passive"], description: "Deploy across multiple data centers." },
+            { topic: "Kafka Internals", concepts: ["Log Storage", "Controller", "Coordinator", "Protocol Design"], description: "Understand Kafka's architecture." }
+          ]
+        },
+        tools: ["Kafka", "Confluent Platform", "Kafka Connect", "ksqlDB", "Schema Registry", "Prometheus", "Grafana", "Docker", "Kubernetes", "Debezium"],
+        difficulty: "advanced"
+      },
+      {
+        title: "Apache Airflow Roadmap",
+        description: "Master workflow automation and orchestration using Apache Airflow for data pipelines.",
+        image: "https://cdn.simpleicons.org/apacheairflow/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is Airflow?", "DAGs", "UI Overview", "Use Cases"], description: "Understand workflow orchestration." },
+            { topic: "Setup", concepts: ["Local install", "Docker", "Astronomer", "Managed Services"], description: "Get Airflow running." },
+            { topic: "Writing DAGs", concepts: ["Python DAG files", "Operators", "Dependencies", "Schedule"], description: "Define workflows in code." },
+            { topic: "Basic Operators", concepts: ["BashOperator", "PythonOperator", "EmailOperator"], description: "Run simple tasks." }
+          ],
+          intermediate: [
+            { topic: "Task Dependencies", concepts: ["upstream/downstream", "set_downstream", "bitshift operators"], description: "Control execution order." },
+            { topic: "Scheduling", concepts: ["cron expressions", "timedelta", "catchup", "timers"], description: "Schedule workflows reliably." },
+            { topic: "XComs", concepts: ["Cross-communication", "Push/pull data", "XCom backends"], description: "Share data between tasks." },
+            { topic: "Hooks & Connections", concepts: ["Database", "API", "Cloud", "Custom hooks"], description: "Connect to external systems." }
+          ],
+          advanced: [
+            { topic: "Dynamic DAGs", concepts: ["Loop-generated tasks", "Templates", "Parametrized DAGs"], description: "Automate DAG creation." },
+            { topic: "Error Handling", concepts: ["Retries", "Triggers", "Alerts", "Sensors"], description: "Make pipelines resilient." },
+            { topic: "SubDAGs & TaskGroups", concepts: ["Modular workflows", "Scoping", "TaskGroup"], description: "Organize complex pipelines." },
+            { topic: "Plugins", concepts: ["Custom operators", "Sensors", "UI extensions", "Macros"], description: "Extend Airflow functionality." }
+          ],
+          expert: [
+            { topic: "Deployment", concepts: ["CeleryExecutor", "KubernetesExecutor", "HA setup", "Scaling"], description: "Run Airflow in production." },
+            { topic: "Monitoring", concepts: ["Logging", "Metrics", "Alerting", "Prometheus"], description: "Ensure pipeline reliability." },
+            { topic: "CI/CD for DAGs", concepts: ["GitHub Actions", "Testing", "Versioning", "DAG Validation"], description: "Treat DAGs as code." },
+            { topic: "Security", concepts: ["RBAC", "Secrets backend", "OAuth", "LDAP"], description: "Secure access and credentials." },
+            { topic: "Airflow Internals", concepts: ["Scheduler", "Executor", "Metadata DB", "Task Lifecycle"], description: "Understand Airflow's architecture." }
+          ]
+        },
+        tools: ["Airflow", "Astronomer", "Docker", "Kubernetes", "PostgreSQL", "Redis", "GitHub", "Grafana", "Prometheus", "Elasticsearch"],
+        difficulty: "advanced"
+      },
+      {
+        title: "Elasticsearch Roadmap",
+        description: "Master Elasticsearch for full-text search, log analysis, and real-time data exploration.",
+        image: "https://cdn.simpleicons.org/elasticsearch/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is Elasticsearch?", "Use Cases", "Ecosystem (ELK)", "Inverted Index"], description: "Understand search and analytics engine." },
+            { topic: "Core Concepts", concepts: ["Index", "Document", "Shards", "Replicas", "Types (deprecated)"], description: "Learn the data model." },
+            { topic: "CRUD Operations", concepts: ["Indexing", "Searching", "Updating", "Deleting", "Bulk API"], description: "Manage documents." },
+            { topic: "REST API", concepts: ["GET", "POST", "PUT", "DELETE", "HTTP clients"], description: "Interact with Elasticsearch via HTTP." }
+          ],
+          intermediate: [
+            { topic: "Query DSL", concepts: ["Match", "Term", "Bool", "Range queries", "Fuzziness"], description: "Write complex search queries." },
+            { topic: "Aggregations", concepts: ["Metrics", "Buckets", "Nested", "Pipeline", "Composite"], description: "Analyze data patterns." },
+            { topic: "Mapping & Data Types", concepts: ["Keyword vs Text", "Dates", "Objects", "Nested", "Geo"], description: "Design efficient schemas." },
+            { topic: "Kibana Basics", concepts: ["Dashboards", "Visualizations", "Dev Tools", "Discover"], description: "Visualize and explore data." }
+          ],
+          advanced: [
+            { topic: "Performance Tuning", concepts: ["Refresh interval", "Bulk indexing", "Search speed", "Circuit Breakers"], description: "Optimize for scale." },
+            { topic: "Index Lifecycle Management (ILM)", concepts: ["Hot-Warm-Cold", "Rollover", "Delete", "Shrink"], description: "Manage data over time." },
+            { topic: "Security", concepts: ["Authentication", "Role-based access", "TLS", "Field/Document Level Security"], description: "Secure your cluster." },
+            { topic: "Scaling", concepts: ["Clustering", "Shard allocation", "Node roles", "Cross-Cluster Search"], description: "Deploy across nodes." }
+          ],
+          expert: [
+            { topic: "Logstash & Beats", concepts: ["Filebeat", "Metricbeat", "Pipelines", "Filters"], description: "Ingest data into Elasticsearch." },
+            { topic: "Monitoring", concepts: ["Elastic Stack Monitoring", "Alerting", "Machine Learning"], description: "Track cluster health." },
+            { topic: "Advanced Analytics", concepts: ["Machine Learning in Kibana", "Anomaly detection", "Forecasting"], description: "Go beyond search." },
+            { topic: "Search Relevance", concepts: ["Scoring", "Boosting", "Synonyms", "Analyzers"], description: "Improve search quality." },
+            { topic: "Elasticsearch Internals", concepts: ["Lucene", "Segments", "Merging", "Translog"], description: "Understand the underlying technology." }
+          ]
+        },
+        tools: ["Elasticsearch", "Kibana", "Logstash", "Filebeat", "Cerebro", "Postman", "Docker", "Kubernetes", "Beats", "Prometheus"],
+        difficulty: "advanced"
+      },
+
+      {
+  title: "Kibana Roadmap",
+  description: "Master Kibana for data visualization, dashboarding, monitoring, and machine learning with Elasticsearch.",
+  image: "https://cdn.simpleicons.org/kibana/005571",
+  levels: {
+    beginner: [
+      { topic: "Introduction", concepts: ["What is Kibana?", "Role in Elastic Stack", "Kibana vs Elasticsearch", "Basic Setup", "Kibana Architecture"], description: "Understand Kibana’s purpose as a visualization and data exploration tool." },
+      { topic: "Interface Basics", concepts: ["Home Screen", "Navigation Bar", "Spaces", "User Preferences", "Dark/Light Mode"], description: "Get familiar with the Kibana UI and workspaces." },
+      { topic: "Discover", concepts: ["Kibana Query Language (KQL)", "Lucene Query Syntax", "Filters", "Time Picker", "Saved Searches"], description: "Explore and query Elasticsearch data interactively." },
+      { topic: "Visualizations Basics", concepts: ["Lens", "Bar/Line/Pie Charts", "Tables", "Maps", "Tag Cloud"], description: "Create simple visualizations for quick insights." },
+      { topic: "Data Views (Index Patterns)", concepts: ["Creating Data Views", "Field Management", "Scripted Fields", "Runtime Fields"], description: "Define how Kibana interprets and works with Elasticsearch indices." }
+    ],
+    intermediate: [
+      { topic: "Dashboards", concepts: ["Building Dashboards", "Dynamic Controls", "Drilldowns", "Linking Visualizations", "Export/Import Dashboards"], description: "Organize and share multiple visualizations in interactive dashboards." },
+      { topic: "Advanced Visualizations", concepts: ["TSVB (Time Series Visual Builder)", "Timelion", "Canvas", "Vega", "Markdown Widgets"], description: "Create advanced visualizations with flexible tools." },
+      { topic: "Dev Tools", concepts: ["Console for Elasticsearch Queries", "Inspect Queries", "Elasticsearch API Playground"], description: "Work directly with Elasticsearch from Kibana." },
+      { topic: "Data Management", concepts: ["Data Views vs Legacy Index Patterns", "Runtime Mappings", "Field Formatters", "Field Statistics"], description: "Refine how data is structured and presented." },
+      { topic: "Reporting", concepts: ["PDF Reports", "CSV Export", "Scheduled Reports", "Custom Branding"], description: "Generate and distribute reports from Kibana." }
+    ],
+    advanced: [
+      { topic: "Security Integration", concepts: ["Spaces Security", "Role-Based Access Control", "Dashboard-Only Mode", "Securing Visualizations"], description: "Manage data access and secure Kibana deployments." },
+      { topic: "Monitoring", concepts: ["Stack Monitoring", "Logs UI", "Metrics UI", "APM Integration"], description: "Use Kibana to monitor Elastic Stack and system performance." },
+      { topic: "Alerting & Actions", concepts: ["Rules", "Connectors", "Notification Channels (Email, Slack, Webhooks)", "Threshold & Metric Alerts"], description: "Automate responses to data-driven conditions." },
+      { topic: "Machine Learning Basics", concepts: ["Anomaly Detection", "Single Metric Jobs", "Multi-Metric Jobs", "Visualize ML Results"], description: "Apply ML features for anomaly detection and trend analysis." },
+      { topic: "Elastic Maps", concepts: ["Geo Data Visualization", "Coordinate Maps", "Region Maps", "Heatmaps"], description: "Work with location-based data in Kibana." }
+    ],
+    expert: [
+      { topic: "Advanced Machine Learning", concepts: ["Forecasting", "Outlier Detection", "Population Analysis", "Model Explainability"], description: "Leverage advanced ML features for predictive analytics." },
+      { topic: "Elastic Maps Deep Dive", concepts: ["Vector Tiles", "Custom Layers", "Real-Time Geo Data", "Geo-Shape Queries"], description: "Handle massive geospatial datasets with Kibana Maps." },
+      { topic: "Canvas Mastery", concepts: ["Workpads", "Expressions", "Dynamic Data", "Custom Branding"], description: "Build custom, pixel-perfect data presentations." },
+      { topic: "Search Experience", concepts: ["Query Tuning", "Synonym Sets in Kibana", "Analyzers Visualization", "Search UI (App Search/Workplace Search Integration)"], description: "Optimize search relevance and user experience." },
+      { topic: "Kibana Internals & Extensibility", concepts: ["Kibana Architecture", "Plugin Development", "Custom Integrations", "Extending Visualizations"], description: "Go under the hood to customize and extend Kibana." },
+      { topic: "Enterprise Operations", concepts: ["Scaling Kibana", "Multi-Tenancy with Spaces", "SAML/OIDC Integration", "High Availability Setup"], description: "Run Kibana at enterprise scale with secure, distributed setups." }
+    ]
+  },
+  tools: ["Kibana", "Elasticsearch", "Logstash", "Beats", "Elastic APM", "Canvas", "Prometheus", "Grafana", "Docker", "Kubernetes"],
+  difficulty: "intermediate"
+},  {
+  "title": "NoSQL Roadmap",
+  "description": "A structured path to master NoSQL databases from fundamentals to advanced distributed data management and analytics.",
+  "image": "https://cdn.simpleicons.org/mongodb/47A248",
+  "levels": {
+    "beginner": [
+      { 
+        "topic": "Introduction", 
+        "concepts": ["What is NoSQL?", "SQL vs NoSQL", "History & Evolution", "CAP Theorem"], 
+        "description": "Understand the motivation behind NoSQL and how it differs from relational databases." 
+      },
+      { 
+        "topic": "Types of NoSQL Databases", 
+        "concepts": ["Document-based", "Key-Value", "Column-family", "Graph"], 
+        "description": "Explore the four major categories of NoSQL databases and their use cases." 
+      },
+      { 
+        "topic": "Data Modeling Basics", 
+        "concepts": ["Schema-less Design", "Denormalization", "Entity Representation"], 
+        "description": "Learn how NoSQL handles flexible schemas and data modeling." 
+      },
+      { 
+        "topic": "CRUD Operations", 
+        "concepts": ["Create (Insert)", "Read (Find/Query)", "Update", "Delete"], 
+        "description": "Perform basic operations across NoSQL systems." 
+      },
+      { 
+        "topic": "Basic Queries", 
+        "concepts": ["Filters", "Sorting", "Projections", "Key-based Lookups"], 
+        "description": "Retrieve and filter data in different NoSQL models." 
+      },
+      { 
+        "topic": "Indexes", 
+        "concepts": ["Single-field Index", "Compound Index", "Unique Index", "TTL Index"], 
+        "description": "Speed up queries and support data lifecycle management." 
+      }
+    ],
+    "intermediate": [
+      { 
+        "topic": "Advanced Data Modeling", 
+        "concepts": ["Embedding vs Referencing", "One-to-Many & Many-to-Many", "Array & Nested Data"], 
+        "description": "Design efficient and scalable data models." 
+      },
+      { 
+        "topic": "Query Operators", 
+        "concepts": ["Comparison Operators", "Logical Operators", "Array Operators", "Regex"], 
+        "description": "Use advanced operators for flexible querying." 
+      },
+      { 
+        "topic": "Aggregation Framework", 
+        "concepts": ["$match", "$group", "$project", "$sort", "$lookup", "$unwind", "Pipelines"], 
+        "description": "Perform powerful data aggregations and transformations." 
+      },
+      { 
+        "topic": "Transactions", 
+        "concepts": ["Atomic Operations", "Multi-document Transactions", "Concurrency Control"], 
+        "description": "Understand how NoSQL systems handle transactions." 
+      },
+      { 
+        "topic": "Replication & Sharding", 
+        "concepts": ["Replica Sets", "Auto-sharding", "Partition Keys", "Consistency Levels"], 
+        "description": "Distribute and replicate data for scalability and availability." 
+      },
+      { 
+        "topic": "Consistency Models", 
+        "concepts": ["Strong Consistency", "Eventual Consistency", "Tunable Consistency", "Quorum Reads/Writes"], 
+        "description": "Learn the trade-offs in distributed data systems." 
+      },
+      { 
+        "topic": "Data Integrity & Validation", 
+        "concepts": ["Schema Validation", "Constraints", "Document Validation Rules"], 
+        "description": "Ensure correctness of data in schema-less systems." 
+      }
+    ],
+    "advanced": [
+      { 
+        "topic": "Performance Tuning", 
+        "concepts": ["Index Optimization", "Query Profiling", "Hotspot Mitigation"], 
+        "description": "Improve efficiency and performance of queries." 
+      },
+      { 
+        "topic": "Advanced Aggregations", 
+        "concepts": ["Faceted Search", "Bucketing", "Window Functions (MongoDB 5+)", "MapReduce"], 
+        "description": "Perform complex analytics inside the database." 
+      },
+      { 
+        "topic": "Data Distribution", 
+        "concepts": ["Partition Strategies", "Horizontal Scaling", "Data Locality"], 
+        "description": "Understand how data is distributed across nodes." 
+      },
+      { 
+        "topic": "Security", 
+        "concepts": ["Authentication", "Role-based Access Control", "Encryption at Rest & In Transit"], 
+        "description": "Secure data in NoSQL environments." 
+      },
+      { 
+        "topic": "Event-driven Patterns", 
+        "concepts": ["Change Streams", "Database Triggers", "Pub/Sub Integration"], 
+        "description": "Integrate NoSQL with event-driven architectures." 
+      },
+      { 
+        "topic": "Backup & Recovery", 
+        "concepts": ["Snapshots", "Incremental Backups", "Disaster Recovery Plans"], 
+        "description": "Implement backup and disaster recovery strategies." 
+      },
+      { 
+        "topic": "Polyglot Persistence", 
+        "concepts": ["Using Multiple Databases", "Choosing the Right Store", "Integration Patterns"], 
+        "description": "Design systems using both SQL and NoSQL together." 
+      }
+    ],
+    "expert": [
+      { 
+        "topic": "Distributed Systems Theory", 
+        "concepts": ["CAP Theorem in Practice", "Paxos & Raft", "Consensus Mechanisms"], 
+        "description": "Understand distributed system foundations of NoSQL databases." 
+      },
+      { 
+        "topic": "Hybrid Architectures", 
+        "concepts": ["SQL + NoSQL Integration", "HTAP Systems", "Hybrid Cloud Deployments"], 
+        "description": "Design systems combining multiple paradigms." 
+      },
+      { 
+        "topic": "Graph Databases", 
+        "concepts": ["Graph Queries (Cypher, Gremlin)", "Graph Traversals", "Graph Analytics"], 
+        "description": "Work with graph-based NoSQL systems for connected data." 
+      },
+      { 
+        "topic": "Time-series & IoT Databases", 
+        "concepts": ["InfluxDB", "Cassandra for IoT", "Retention Policies", "Downsampling"], 
+        "description": "Handle high-volume real-time and time-series data." 
+      },
+      { 
+        "topic": "Search & Analytics with NoSQL", 
+        "concepts": ["Elasticsearch", "Full-text Search", "Log Analysis"], 
+        "description": "Use NoSQL for advanced search and analytics workloads." 
+      },
+      { 
+        "topic": "Big Data & Streaming", 
+        "concepts": ["Hadoop Integration", "Spark with NoSQL", "Kafka + NoSQL Streaming"], 
+        "description": "Integrate NoSQL with big data and real-time processing systems." 
+      },
+      { 
+        "topic": "Global-scale NoSQL", 
+        "concepts": ["Multi-region Clusters", "Conflict Resolution", "Data Sovereignty"], 
+        "description": "Build systems that scale globally with resilience." 
+      },
+      { 
+        "topic": "Multi-model Databases", 
+        "concepts": ["Document + Graph", "Key-Value + Column", "ArangoDB", "Cosmos DB"], 
+        "description": "Leverage multi-model capabilities in advanced systems." 
+      }
+    ]
+  },
+  "tools": [
+    "MongoDB",
+    "Cassandra",
+    "Redis",
+    "CouchDB",
+    "Neo4j",
+    "Amazon DynamoDB",
+    "Elasticsearch",
+    "Firebase Realtime Database",
+    "Cosmos DB",
+    "ScyllaDB",
+    "ArangoDB",
+    "FaunaDB",
+    "HBase"
+  ],
+  "difficulty": "beginner"
+}, {
+        title: "dbt (Data Build Tool) Roadmap",
+        description: "Master dbt for transforming raw data into reliable, production-ready models using SQL and version control.",
+        image: "https://cdn.simpleicons.org/dbt/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction to dbt", concepts: ["What is dbt?", "Why use dbt?", "Core concepts", "Modern Data Stack"], description: "Understand dbt’s role in the modern data stack." },
+            { topic: "Setting Up", concepts: ["dbt Cloud", "dbt CLI", "Connecting to warehouse", "Project Initialization"], description: "Install and configure dbt for your data platform." },
+            { topic: "Writing Models", concepts: ["SELECT statements", "Ref function", "Sources", "Jinja templating"], description: "Create your first dbt models." },
+            { topic: "Project Structure", concepts: ["models/", "seeds/", "snapshots/", "docs/", "macros/"], description: "Organize your dbt project effectively." }
+          ],
+          intermediate: [
+            { topic: "Materializations", concepts: ["views", "tables", "incremental", "ephemeral", "table types"], description: "Choose the right materialization strategy." },
+            { topic: "Testing & Documentation", concepts: ["Schema tests", "Custom tests", "Generating docs", "Test coverage"], description: "Ensure data quality and share documentation." },
+            { topic: "Macros & Variables", concepts: ["Custom SQL macros", "Global variables", "Packages", "Argument passing"], description: "Reuse logic and customize behavior." },
+            { topic: "Packages", concepts: ["dbt-utils", "Analytics Engineering", "Community packages", "Package management"], description: "Leverage open-source packages to speed up development." }
+          ],
+          advanced: [
+            { topic: "Snapshots", concepts: ["Tracking changes", "SCD Type 2", "Snapshot strategies", "Historical data"], description: "Capture historical changes in source data." },
+            { topic: "Exposures & Metrics", concepts: ["Defining business metrics", "Upstream dependencies", "Lineage", "Impact analysis"], description: "Link models to business outcomes." },
+            { topic: "CI/CD Integration", concepts: ["GitHub Actions", "Pull request workflows", "Automated testing", "Deployment strategies"], description: "Automate testing and deployment." },
+            { topic: "Performance Optimization", concepts: ["Partitioning", "Clustering", "Query optimization", "Incremental models"], description: "Optimize dbt model performance." }
+          ],
+          expert: [
+            { topic: "Custom Adapters", concepts: ["Building for new warehouses", "Adapter development", "Plugin architecture"], description: "Extend dbt to support new platforms." },
+            { topic: "Governance & Lineage", concepts: ["Data catalog integration", "Lineage tracking", "Data quality monitoring"], description: "Integrate with data governance tools." },
+            { topic: "Team Collaboration", concepts: ["Branching strategies", "Code reviews", "Documentation standards", "Team workflows"], description: "Scale dbt across large teams." },
+            { topic: "Advanced Jinja", concepts: ["Custom filters", "Tests", "Loops", "Macro recursion"], description: "Master Jinja templating for complex transformations." },
+            { topic: "dbt Internals", concepts: ["Parser", "Compiler", "Execution Engine", "Graph Resolution"], description: "Understand dbt's architecture." }
+          ]
+        },
+        tools: ["dbt Cloud", "Snowflake", "BigQuery", "PostgreSQL", "GitHub", "Jinja", "VS Code", "dbt Labs", "DataHub"],
+        difficulty: "intermediate"
+      },
+      {
+        title: "Snowflake Roadmap",
+        description: "Master Snowflake for cloud data warehousing, ELT, and scalable analytics.",
+        image: "https://cdn.simpleicons.org/snowflake/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is Snowflake?", "Architecture", "Use Cases", "Serverless"], description: "Understand Snowflake's cloud-native data platform." },
+            { topic: "Core Concepts", concepts: ["Virtual Warehouses", "Databases", "Schemas", "Stages"], description: "Learn the building blocks of Snowflake." },
+            { topic: "Loading Data", concepts: ["CSV, JSON, Parquet", "COPY INTO", "Stages", "External Tables"], description: "Ingest data from various sources." },
+            { topic: "SQL Basics", concepts: ["SELECT", "JOIN", "Filtering", "Subqueries", "CTEs"], description: "Query data using Snowflake SQL." }
+          ],
+          intermediate: [
+            { topic: "Semi-Structured Data", concepts: ["VARIANT", "JSON", "XML", "Flattening", "Path expressions"], description: "Work with JSON and nested data." },
+            { topic: "Time Travel & Cloning", concepts: ["Recovery", "Zero-copy cloning", "Fail-safe", "Retention periods"], description: "Leverage Snowflake’s unique features." },
+            { topic: "Security", concepts: ["Roles", "Users", "Data Sharing", "Network Policies"], description: "Manage access and share data securely." },
+            { topic: "Performance Tuning", concepts: ["Warehouse sizing", "Clustering keys", "Query profiling", "Result caching"], description: "Optimize query performance." }
+          ],
+          advanced: [
+            { topic: "Snowpipe", concepts: ["Auto-ingest", "Streaming data", "Continuous loading", "Pipe monitoring"], description: "Load data continuously." },
+            { topic: "Tasks & Scheduling", concepts: ["Stored procedures", "Task graphs", "Scheduling", "Error handling"], description: "Automate workflows." },
+            { topic: "External Functions", concepts: ["Calling APIs", "Lambda integration", "Secure external functions"], description: "Extend Snowflake with external logic." },
+            { topic: "Data Sharing", concepts: ["Secure Data Sharing", "Data Marketplace", "Reader accounts", "Live tables"], description: "Share data across accounts and organizations." }
+          ],
+          expert: [
+            { topic: "Multi-Cloud & Regions", concepts: ["AWS, GCP, Azure", "Cross-region replication", "Data replication", "Global services"], description: "Deploy across clouds and regions." },
+            { topic: "Cost Optimization", concepts: ["Warehouse auto-suspend", "Query profiling", "Storage optimization", "Resource monitoring"], description: "Control costs at scale." },
+            { topic: "Governance", concepts: ["Tagging", "Access History", "Data Lineage", "Data classification"], description: "Implement data governance." },
+            { topic: "Snowpark", concepts: ["Python in Snowflake", "Java/Scala UDFs", "Machine Learning", "Dataframe API"], description: "Run code in-database." },
+            { topic: "Streams & Tasks", concepts: ["Change data capture", "Event-driven pipelines", "Micro-batching"], description: "Build real-time data pipelines." }
+          ]
+        },
+        tools: ["Snowflake", "Snowsight", "dbt", "Fivetran", "Matillion", "Airflow", "Git", "Snowpark", "Streamlit"],
+        difficulty: "intermediate"
+      },
+      {
+        title: "Apache Flink Roadmap",
+        description: "Master Apache Flink for high-throughput, low-latency stream processing and real-time analytics.",
+        image: "https://cdn.simpleicons.org/apache/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is Flink?", "Batch vs Streaming", "Use Cases", "Event-Driven Architecture"], description: "Understand Flink’s role in real-time processing." },
+            { topic: "Core Concepts", concepts: ["DataStream", "Time (Event/Processing)", "State", "Checkpointing"], description: "Learn Flink’s programming model." },
+            { topic: "Setup", concepts: ["Local Cluster", "Flink CLI", "Docker", "Kubernetes"], description: "Get Flink running for development." },
+            { topic: "Hello World", concepts: ["Word Count", "Data Sources/Sinks", "Execution Environment"], description: "Write your first Flink application." }
+          ],
+          intermediate: [
+            { topic: "Windowing", concepts: ["Tumbling", "Sliding", "Session Windows", "Count Windows"], description: "Aggregate data over time." },
+            { topic: "Event Time & Watermarks", concepts: ["Handling Late Data", "Timestamps", "Watermark Strategies"], description: "Ensure accurate time-based processing." },
+            { topic: "State Management", concepts: ["Keyed State", "Operator State", "State Backends", "TTL"], description: "Store and manage state in streaming jobs." },
+            { topic: "Checkpointing", concepts: ["Fault Tolerance", "Savepoints", "Checkpoint Interval", "Alignment"], description: "Enable recovery from failures." }
+          ],
+          advanced: [
+            { topic: "Connectors", concepts: ["Kafka", "Pulsar", "JDBC", "S3", "Elasticsearch"], description: "Integrate with external systems." },
+            { topic: "CEP (Complex Event Processing)", concepts: ["Pattern Matching", "Event Sequences", "CEP Library"], description: "Detect patterns in event streams." },
+            { topic: "Table API & SQL", concepts: ["Flink SQL", "Stream-Batch Unity", "Catalogs", "Temporal Joins"], description: "Use SQL for stream processing." },
+            { topic: "Performance Tuning", concepts: ["Parallelism", "Backpressure", "Memory Management", "Network Buffers"], description: "Optimize job performance." }
+          ],
+          expert: [
+            { topic: "Deployment", concepts: ["YARN", "Kubernetes", "Standalone", "High Availability"], description: "Run Flink in production environments." },
+            { topic: "Monitoring", concepts: ["Flink Web UI", "Metrics", "Logging", "Prometheus"], description: "Monitor and debug running jobs." },
+            { topic: "Custom UDFs", concepts: ["Java/Scala/Python UDFs", "Scalar/Aggregate Functions"], description: "Extend Flink with custom logic." },
+            { topic: "Security", concepts: ["Kerberos", "TLS", "Authorization", "Encryption"], description: "Secure Flink deployments." },
+            { topic: "Flink Internals", concepts: ["JobManager", "TaskManager", "Network Stack", "Scheduler"], description: "Understand Flink's architecture." }
+          ]
+        },
+        tools: ["Flink", "Kafka", "Docker", "Kubernetes", "Prometheus", "Grafana", "AWS S3", "Hadoop", "Zookeeper", "Pulsar"],
+        difficulty: "advanced"
+      },
+      {
+        title: "TensorFlow Roadmap",
+        description: "Master TensorFlow for building and deploying machine learning models at scale.",
+        image: "https://cdn.simpleicons.org/tensorflow/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is TensorFlow?", "Use Cases", "TensorFlow vs PyTorch"], description: "Understand TensorFlow's role in ML." },
+            { topic: "Core Concepts", concepts: ["Tensors", "Graphs", "Sessions", "Operations"], description: "Learn TensorFlow's foundational concepts." },
+            { topic: "Setup", concepts: ["Installation", "GPU Support", "Google Colab"], description: "Get TensorFlow running." },
+            { topic: "Hello World", concepts: ["Basic Operations", "Linear Regression", "MNIST"], description: "Write your first TensorFlow programs." }
+          ],
+          intermediate: [
+            { topic: "Keras API", concepts: ["Sequential Model", "Functional API", "Layers", "Compilation"], description: "Build neural networks with Keras." },
+            { topic: "Model Training", concepts: ["Fit Method", "Callbacks", "Validation", "Early Stopping"], description: "Train models effectively." },
+            { topic: "Preprocessing", concepts: ["ImageDataGenerator", "TextVectorization", "Normalization"], description: "Prepare data for training." },
+            { topic: "Transfer Learning", concepts: ["Pre-trained Models", "Fine-tuning", "Feature Extraction"], description: "Leverage existing models." }
+          ],
+          advanced: [
+            { topic: "Custom Models", concepts: ["Subclassing", "Custom Layers", "Custom Training Loops"], description: "Build complex architectures." },
+            { topic: "Distributed Training", concepts: ["MirroredStrategy", "TPUStrategy", "MultiWorkerMirroring"], description: "Scale training across devices." },
+            { topic: "TF Data", concepts: ["Pipelines", "Performance", "Prefetching", "Caching"], description: "Optimize data input pipelines." },
+            { topic: "TF Serving", concepts: ["Model Export", "REST API", "gRPC", "Versioning"], description: "Deploy models in production." }
+          ],
+          expert: [
+            { topic: "TF Lite", concepts: ["Mobile Deployment", "Quantization", "Edge Devices"], description: "Deploy models on mobile and edge." },
+            { topic: "TF.js", concepts: ["Browser Deployment", "Web Applications", "Transfer Learning"], description: "Run models in the browser." },
+            { topic: "TF Extended (TFX)", concepts: ["ML Pipelines", "Data Validation", "Model Analysis"], description: "Build end-to-end ML pipelines." },
+            { topic: "Custom Ops", concepts: ["C++ Extensions", "GPU Kernels", "Performance Optimization"], description: "Extend TensorFlow with custom operations." },
+            { topic: "Research Applications", concepts: ["GANs", "Reinforcement Learning", "NLP Models"], description: "Apply TensorFlow to cutting-edge research." }
+          ]
+        },
+        tools: ["TensorFlow", "Keras", "Google Colab", "TensorBoard", "TF Serving", "TF Lite", "TF.js", "Jupyter", "PyCharm"],
+        difficulty: "advanced"
+      },
+      {
+        title: "PyTorch Roadmap",
+        description: "Master PyTorch for deep learning research and production applications.",
+        image: "https://cdn.simpleicons.org/pytorch/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is PyTorch?", "Use Cases", "PyTorch vs TensorFlow"], description: "Understand PyTorch's role in deep learning." },
+            { topic: "Core Concepts", concepts: ["Tensors", "Autograd", "Dynamic Computation Graph"], description: "Learn PyTorch's foundational concepts." },
+            { topic: "Setup", concepts: ["Installation", "GPU Support", "Google Colab"], description: "Get PyTorch running." },
+            { topic: "Hello World", concepts: ["Basic Operations", "Linear Regression", "MNIST"], description: "Write your first PyTorch programs." }
+          ],
+          intermediate: [
+            { topic: "Neural Networks", concepts: ["nn.Module", "Layers", "Loss Functions", "Optimizers"], description: "Build neural networks with PyTorch." },
+            { topic: "Training Loop", concepts: ["Forward Pass", "Backward Pass", "Gradient Descent", "Epochs"], description: "Implement training loops." },
+            { topic: "Data Loading", concepts: ["Dataset", "DataLoader", "Transforms", "Custom Datasets"], description: "Load and preprocess data." },
+            { topic: "Transfer Learning", concepts: ["Pre-trained Models", "Fine-tuning", "Feature Extraction"], description: "Leverage existing models." }
+          ],
+          advanced: [
+            { topic: "Custom Architectures", concepts: ["Subclassing", "Custom Layers", "Complex Models"], description: "Build sophisticated neural networks." },
+            { topic: "Distributed Training", concepts: ["DistributedDataParallel", "DataParallel", "Multi-GPU"], description: "Scale training across devices." },
+            { topic: "TorchScript", concepts: ["JIT Compilation", "Model Export", "Production Deployment"], description: "Optimize models for production." },
+            { topic: "ONNX", concepts: ["Model Export", "Cross-Framework Compatibility", "Inference"], description: "Convert models to ONNX format." }
+          ],
+          expert: [
+            { topic: "TorchServe", concepts: ["Model Serving", "REST API", "Batching", "Versioning"], description: "Deploy models in production." },
+            { topic: "TorchVision", concepts: ["Image Models", "Datasets", "Transforms", "Object Detection"], description: "Work with computer vision models." },
+            { topic: "TorchText", concepts: ["NLP Models", "Datasets", "Tokenization", "Language Models"], description: "Work with natural language processing." },
+            { topic: "TorchAudio", concepts: ["Audio Models", "Speech Recognition", "Audio Processing"], description: "Work with audio data and models." },
+            { topic: "PyTorch Lightning", concepts: ["Simplified Training", "Best Practices", "Scalability"], description: "Use high-level framework for research." }
+          ]
+        },
+        tools: ["PyTorch", "Google Colab", "Jupyter", "TensorBoard", "TorchServe", "ONNX", "PyTorch Lightning", "Weights & Biases"],
+        difficulty: "advanced"
+      },
+      {
+        title: "Machine Learning Roadmap",
+        description: "Comprehensive path to master machine learning from fundamentals to advanced techniques.",
+        image: "https://cdn.simpleicons.org/scikitlearn/0AF",
+        levels: {
+          beginner: [
+            { topic: "Foundations", concepts: ["What is ML?", "Types of ML", "Applications", "Ethics"], description: "Understand the fundamentals of machine learning." },
+            { topic: "Mathematics", concepts: ["Linear Algebra", "Calculus", "Probability", "Statistics"], description: "Learn the mathematical foundations." },
+            { topic: "Python for ML", concepts: ["NumPy", "Pandas", "Matplotlib", "Jupyter"], description: "Set up your ML environment." },
+            { topic: "Data Preprocessing", concepts: ["Cleaning", "Normalization", "Encoding", "Splitting"], description: "Prepare data for ML models." }
+          ],
+          intermediate: [
+            { topic: "Supervised Learning", concepts: ["Linear/Logistic Regression", "Decision Trees", "SVM", "Naive Bayes"], description: "Learn foundational algorithms." },
+            { topic: "Unsupervised Learning", concepts: ["K-Means", "Hierarchical Clustering", "PCA", "Association Rules"], description: "Discover patterns in unlabeled data." },
+            { topic: "Model Evaluation", concepts: ["Accuracy", "Precision/Recall", "ROC/AUC", "Cross-Validation"], description: "Assess model performance." },
+            { topic: "Overfitting & Regularization", concepts: ["Bias-Variance Tradeoff", "L1/L2", "Dropout", "Early Stopping"], description: "Prevent overfitting." }
+          ],
+          advanced: [
+            { topic: "Ensemble Methods", concepts: ["Random Forest", "Gradient Boosting", "XGBoost", "LightGBM"], description: "Combine models for better performance." },
+            { topic: "Deep Learning", concepts: ["Neural Networks", "CNN", "RNN", "Autoencoders"], description: "Learn neural network architectures." },
+            { topic: "Hyperparameter Tuning", concepts: ["Grid Search", "Random Search", "Bayesian Optimization", "Optuna"], description: "Optimize model parameters." },
+            { topic: "Feature Engineering", concepts: ["Selection", "Extraction", "Transformation", "Automated FE"], description: "Create better input features." }
+          ],
+          expert: [
+            { topic: "Advanced Deep Learning", concepts: ["Transformers", "GANs", "Reinforcement Learning", "Meta-Learning"], description: "Master cutting-edge techniques." },
+            { topic: "MLOps", concepts: ["CI/CD", "Monitoring", "Versioning", "Deployment"], description: "Operationalize ML models." },
+            { topic: "Explainable AI", concepts: ["SHAP", "LIME", "Feature Importance", "Model Interpretability"], description: "Understand model decisions." },
+            { topic: "Federated Learning", concepts: ["Distributed Training", "Privacy-Preserving", "Edge ML"], description: "Train models on decentralized data." },
+            { topic: "AutoML", concepts: ["Automated Pipelines", "Neural Architecture Search", "H2O.ai", "Google AutoML"], description: "Automate ML workflows." }
+          ]
+        },
+        tools: ["scikit-learn", "XGBoost", "LightGBM", "CatBoost", "Optuna", "Weights & Biases", "MLflow", "Kubeflow", "Google Cloud AI", "Azure ML"],
+        difficulty: "intermediate"
+      },
+      {
+        title: "Data Engineering Roadmap",
+        description: "Comprehensive path to master data engineering from pipelines to architecture.",
+        image: "https://cdn.simpleicons.org/apacheairflow/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is Data Engineering?", "Data Engineering vs Data Science"], description: "Understand the data engineering role." },
+            { topic: "Programming", concepts: ["Python", "SQL", "Shell Scripting", "Git"], description: "Learn essential programming skills." },
+            { topic: "Databases", concepts: ["Relational", "NoSQL", "Data Modeling", "Normalization"], description: "Work with data storage systems." },
+            { topic: "Linux & CLI", concepts: ["Bash", "File Systems", "Permissions", "Process Management"], description: "Master the command line." }
+          ],
+          intermediate: [
+            { topic: "ETL/ELT", concepts: ["Data Pipelines", "Data Batch Processing", "Data Transformation", "Data Quality"], description: "Build data integration processes." },
+            { topic: "Big Data Technologies", concepts: ["Hadoop", "Spark", "Kafka", "Flink"], description: "Handle large-scale data processing." },
+            { topic: "Cloud Platforms", concepts: ["AWS", "GCP", "Azure", "Cloud Storage", "Compute"], description: "Work with cloud infrastructure." },
+            { topic: "Data Warehousing", concepts: ["Star Schema", "Snowflake", "Redshift", "BigQuery"], description: "Design data warehouses." }
+          ],
+          advanced: [
+            { topic: "Data Orchestration", concepts: ["Airflow", "Prefect", "Luigi", "Dagster"], description: "Automate complex workflows." },
+            { topic: "Streaming Data", concepts: ["Kafka", "Kinesis", "Pub/Sub", "Real-time Processing"], description: "Build real-time data pipelines." },
+            { topic: "Data Modeling", concepts: ["Kimball", "Inmon", "Data Vault", "Dimensional Modeling"], description: "Design scalable data models." },
+            { topic: "Infrastructure as Code", concepts: ["Terraform", "CloudFormation", "ARM Templates"], description: "Manage infrastructure programmatically." }
+          ],
+          expert: [
+            { topic: "Data Architecture", concepts: ["Data Mesh", "Data Lakehouse", "Lambda/Kappa Architecture"], description: "Design enterprise data systems." },
+            { topic: "Performance Optimization", concepts: ["Query Optimization", "Indexing", "Partitioning", "Caching"], description: "Optimize data systems." },
+            { topic: "Security & Compliance", concepts: ["Data Encryption", "Access Control", "GDPR", "HIPAA"], description: "Ensure data security." },
+            { topic: "Leadership", concepts: ["Team Management", "Project Management", "Architecture Decisions"], description: "Lead data engineering teams." }
+          ]
+        },
+        tools: ["Python", "SQL", "Spark", "Kafka", "Airflow", "dbt", "Snowflake", "BigQuery", "Redshift", "Docker", "Kubernetes", "Terraform", "AWS", "GCP", "Azure"],
+        difficulty: "intermediate"
+      },
+      {
+        title: "AI & Deep Learning Roadmap",
+        description: "Master artificial intelligence and deep learning from fundamentals to cutting-edge research.",
+        image: "https://cdn.simpleicons.org/openai/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is AI?", "History of AI", "Applications", "Ethics"], description: "Understand the foundations of artificial intelligence." },
+            { topic: "Prerequisites", concepts: ["Linear Algebra", "Calculus", "Probability", "Python"], description: "Learn the mathematical and programming foundations." },
+            { topic: "Machine Learning Basics", concepts: ["Supervised/Unsupervised", "Neural Networks", "Model Evaluation"], description: "Understand ML fundamentals." },
+            { topic: "Tools & Frameworks", concepts: ["TensorFlow", "PyTorch", "Keras", "Jupyter"], description: "Set up your AI development environment." }
+          ],
+          intermediate: [
+            { topic: "Deep Learning", concepts: ["Feedforward Networks", "CNN", "RNN", "Autoencoders"], description: "Learn neural network architectures." },
+            { topic: "Computer Vision", concepts: ["Image Classification", "Object Detection", "Segmentation", "OpenCV"], description: "Apply AI to visual data." },
+            { topic: "Natural Language Processing", concepts: ["Text Classification", "Sentiment Analysis", "NLP Pipelines"], description: "Process and understand text." },
+            { topic: "Reinforcement Learning", concepts: ["Q-Learning", "Deep Q-Networks", "Policy Gradients"], description: "Train agents to make decisions." }
+          ],
+          advanced: [
+            { topic: "Advanced Architectures", concepts: ["Transformers", "Attention Mechanisms", "BERT", "GPT"], description: "Master state-of-the-art models." },
+            { topic: "Generative Models", concepts: ["GANs", "VAEs", "Diffusion Models", "StyleGAN"], description: "Create new data samples." },
+            { topic: "Multimodal AI", concepts: ["Vision-Language Models", "Audio-Visual", "Cross-Modal Learning"], description: "Work with multiple data types." },
+            { topic: "AI in Production", concepts: ["Model Deployment", "Scaling", "Monitoring", "MLOps"], description: "Deploy AI systems in production." }
+          ],
+          expert: [
+            { topic: "Cutting-Edge Research", concepts: ["Large Language Models", "Multimodal Agents", "AI Safety", "Neuro-Symbolic AI"], description: "Explore the frontiers of AI." },
+            { topic: "AI Ethics & Governance", concepts: ["Bias Detection", "Fairness", "Explainability", "Regulatory Compliance"], description: "Ensure responsible AI development." },
+            { topic: "AI Hardware", concepts: ["TPUs", "GPUs", "Neuromorphic Computing", "Edge AI"], description: "Optimize for specialized hardware." },
+            { topic: "AI Leadership", concepts: ["Research Management", "Team Leadership", "Strategic Planning"], description: "Lead AI initiatives and teams." }
+          ]
+        },
+        tools: ["TensorFlow", "PyTorch", "Hugging Face", "OpenAI API", "Weights & Biases", "MLflow", "Kubeflow", "NVIDIA GPUs", "Google Cloud AI", "Azure ML"],
+        difficulty: "advanced"
+      },
+      {
+        title: "Cloud Computing Roadmap",
+        description: "Master cloud computing platforms for data and AI applications.",
+        image: "https://cdn.simpleicons.org/amazon/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is Cloud Computing?", "IaaS/PaaS/SaaS", "Public/Private/Hybrid"], description: "Understand cloud computing fundamentals." },
+            { topic: "Major Providers", concepts: ["AWS", "GCP", "Azure", "Comparison"], description: "Learn about the major cloud platforms." },
+            { topic: "Core Services", concepts: ["Compute", "Storage", "Networking", "Databases"], description: "Understand essential cloud services." },
+            { topic: "Account Setup", concepts: ["Free Tier", "Billing", "Security", "IAM"], description: "Set up and secure your cloud account." }
+          ],
+          intermediate: [
+            { topic: "Compute", concepts: ["VMs", "Containers", "Serverless", "Kubernetes"], description: "Deploy applications in the cloud." },
+            { topic: "Storage", concepts: ["Object Storage", "Block Storage", "File Storage", "Data Lakes"], description: "Store data in the cloud." },
+            { topic: "Networking", concepts: ["VPC", "Subnets", "Load Balancers", "CDN"], description: "Configure cloud networking." },
+            { topic: "Security", concepts: ["IAM", "Encryption", "Firewalls", "Monitoring"], description: "Secure cloud resources." }
+          ],
+          advanced: [
+            { topic: "DevOps", concepts: ["CI/CD", "Infrastructure as Code", "Configuration Management"], description: "Automate cloud operations." },
+            { topic: "Big Data", concepts: ["Data Warehousing", "Data Lakes", "Stream Processing", "ETL"], description: "Process large datasets in the cloud." },
+            { topic: "AI/ML Services", concepts: ["SageMaker", "Vertex AI", "Azure ML", "Pre-trained Models"], description: "Build AI applications in the cloud." },
+            { topic: "Cost Optimization", concepts: ["Pricing Models", "Reserved Instances", "Spot Instances", "Budgeting"], description: "Manage cloud costs effectively." }
+          ],
+          expert: [
+            { topic: "Multi-Cloud", concepts: ["Cross-Cloud Architecture", "Migration", "Consistency"], description: "Work across multiple cloud providers." },
+            { topic: "Disaster Recovery", concepts: ["Backup", "Replication", "Failover", "Business Continuity"], description: "Ensure high availability." },
+            { topic: "Cloud Architecture", concepts: ["Design Patterns", "Best Practices", "Reference Architectures"], description: "Design scalable cloud systems." },
+            { topic: "Cloud Leadership", concepts: ["Strategy", "Governance", "Team Management", "Vendor Management"], description: "Lead cloud initiatives." }
+          ]
+        },
+        tools: ["AWS", "GCP", "Azure", "Terraform", "Docker", "Kubernetes", "Ansible", "Chef", "Puppet", "GitHub Actions", "Jenkins"],
+        difficulty: "intermediate"
+      },
+      {
+        title: "Data Visualization Roadmap",
+        description: "Master data visualization techniques and tools for effective communication.",
+        image: "https://img.icons8.com/color/96/data-visualization.png",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is Data Visualization?", "Importance", "Principles"], description: "Understand the fundamentals of data visualization." },
+            { topic: "Chart Types", concepts: ["Bar", "Line", "Pie", "Scatter", "Histogram"], description: "Learn common visualization types." },
+            { topic: "Tools", concepts: ["Excel", "Google Sheets", "Basic Charts"], description: "Create simple visualizations." },
+            { topic: "Design Principles", concepts: ["Color Theory", "Layout", "Typography", "Accessibility"], description: "Apply design best practices." }
+          ],
+          intermediate: [
+            { topic: "Advanced Charts", concepts: ["Heatmaps", "Tree Maps", "Choropleth", "Network Graphs"], description: "Create complex visualizations." },
+            { topic: "BI Tools", concepts: ["Power BI", "Tableau", "Looker", "Qlik"], description: "Use professional BI platforms." },
+            { topic: "Programming", concepts: ["Matplotlib", "Seaborn", "Plotly", "ggplot2"], description: "Create visualizations with code." },
+            { topic: "Dashboard Design", concepts: ["Layout", "Interactivity", "Storytelling", "User Experience"], description: "Build effective dashboards." }
+          ],
+          advanced: [
+            { topic: "Interactive Visualizations", concepts: ["D3.js", "Bokeh", "Altair", "Shiny"], description: "Create interactive web-based visualizations." },
+            { topic: "Geospatial", concepts: ["Maps", "GIS", "Geocoding", "Spatial Analysis"], description: "Visualize location-based data." },
+            { topic: "Real-time", concepts: ["Streaming Data", "Live Dashboards", "WebSockets"], description: "Display real-time data." },
+            { topic: "Advanced Design", concepts: ["User Research", "Information Architecture", "Visual Analytics"], description: "Apply advanced design principles." }
+          ],
+          expert: [
+            { topic: "Custom Visuals", concepts: ["SVG", "Canvas", "WebGL", "3D Visualization"], description: "Create custom visualization components." },
+            { topic: "Visualization Research", concepts: ["New Techniques", "Perception Studies", "Cognitive Science"], description: "Contribute to visualization research." },
+            { topic: "Enterprise Solutions", concepts: ["Scalability", "Security", "Governance", "Integration"], description: "Implement enterprise visualization systems." },
+            { topic: "Leadership", concepts: ["Team Management", "Strategy", "Innovation"], description: "Lead visualization initiatives." }
+          ]
+        },
+        tools: ["Power BI", "Tableau", "D3.js", "Matplotlib", "Seaborn", "Plotly", "ggplot2", "Qlik", "Looker", "Google Data Studio", "Figma", "Adobe Illustrator"],
+        difficulty: "beginner"
+      },
+      {
+        title: "Docker Roadmap",
+        description: "Master containerization with Docker for consistent development, testing, and deployment environments in data workflows.",
+        image: "https://cdn.simpleicons.org/docker/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction to Docker", concepts: ["What is Docker?", "Containers vs VMs", "Use Cases in Data Engineering"], description: "Understand Docker's role in containerization." },
+            { topic: "Installation & Setup", concepts: ["Docker Desktop", "CLI Basics", "Hello World Container"], description: "Install Docker and run your first container." },
+            { topic: "Images & Containers", concepts: ["docker run", "docker ps", "docker stop", "docker rm"], description: "Manage images and containers." },
+            { topic: "Basic Commands", concepts: ["docker pull", "docker images", "docker inspect", "docker logs"], description: "Work with Docker commands for basic operations." }
+          ],
+          intermediate: [
+            { topic: "Dockerfile", concepts: ["FROM, RUN, COPY, CMD, ENTRYPOINT", "Building Images"], description: "Create custom Docker images." },
+            { topic: "Volumes & Bind Mounts", concepts: ["Persistent Data", "docker volume", "Mounting Local Directories"], description: "Manage data persistence in containers." },
+            { topic: "Networking", concepts: ["Bridge Networks", "docker network", "Port Mapping"], description: "Connect containers and expose services." },
+            { topic: "Docker Compose", concepts: ["YAML Files", "Multi-Container Apps", "docker-compose up/down"], description: "Orchestrate multi-container applications." }
+          ],
+          advanced: [
+            { topic: "Security Best Practices", concepts: ["Rootless Mode", "Image Scanning", "Secrets Management"], description: "Secure Docker containers and images." },
+            { topic: "Optimization", concepts: ["Multi-Stage Builds", "Layer Caching", "Image Size Reduction"], description: "Optimize Docker images for efficiency." },
+            { topic: "Docker Swarm", concepts: ["Clustering", "Services", "Stacks"], description: "Orchestrate containers in a cluster." },
+            { topic: "Integration with CI/CD", concepts: ["Docker in Pipelines", "GitHub Actions", "Jenkins Integration"], description: "Use Docker in continuous integration workflows." }
+          ],
+          expert: [
+            { topic: "Custom Base Images", concepts: ["Building from Scratch", "Alpine vs Ubuntu", "Security Hardening"], description: "Create secure custom base images." },
+            { topic: "Docker Internals", concepts: ["Namespaces", "Cgroups", "UnionFS"], description: "Understand Docker's underlying architecture." },
+            { topic: "Kubernetes Integration", concepts: ["Docker as Runtime", "Containerd", "CRI-O"], description: "Prepare for Kubernetes orchestration." },
+            { topic: "Advanced Monitoring", concepts: ["cAdvisor", "Prometheus Integration", "Logging Drivers"], description: "Monitor and log Docker environments at scale." }
+          ]
+        },
+        tools: ["Docker Desktop", "Docker Compose", "Docker Swarm", "Kubernetes", "Portainer", "VS Code Docker Extension", "Jenkins", "GitHub Actions"],
+        difficulty: "beginner"
+      },
+      {
+        title: "Hadoop Roadmap",
+        description: "Master Hadoop for distributed storage and processing of large-scale data sets.",
+        image: "https://cdn.simpleicons.org/apachehadoop/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction to Hadoop", concepts: ["What is Hadoop?", "HDFS", "MapReduce", "Ecosystem"], description: "Understand Hadoop's role in big data." },
+            { topic: "Installation & Setup", concepts: ["Single-Node Cluster", "Multi-Node", "Cloudera/Hortonworks"], description: "Set up a Hadoop environment." },
+            { topic: "HDFS Basics", concepts: ["NameNode", "DataNode", "Blocks", "Replication"], description: "Store data in Hadoop Distributed File System." },
+            { topic: "Basic Commands", concepts: ["hdfs dfs -ls", "-put", "-get", "-mkdir"], description: "Interact with HDFS via CLI." }
+          ],
+          intermediate: [
+            { topic: "MapReduce Programming", concepts: ["Mapper", "Reducer", "Job Configuration", "Combiners"], description: "Write MapReduce jobs in Java/Python." },
+            { topic: "YARN", concepts: ["ResourceManager", "NodeManager", "ApplicationMaster"], description: "Manage resources with YARN." },
+            { topic: "Data Ingestion", concepts: ["Sqoop", "Flume", "Kafka Integration"], description: "Ingest data into Hadoop." },
+            { topic: "Querying Data", concepts: ["Hive", "Pig", "Impala"], description: "Query data using SQL-like languages." }
+          ],
+          advanced: [
+            { topic: "HDFS Federation & HA", concepts: ["Multiple NameNodes", "Failover", "Quorum Journal Manager"], description: "Implement high availability." },
+            { topic: "Security", concepts: ["Kerberos", "Ranger", "Sentry", "Encryption"], description: "Secure Hadoop clusters." },
+            { topic: "Performance Tuning", concepts: ["Compression", "Partitioning", "Bucketing", "Tez Engine"], description: "Optimize Hadoop jobs." },
+            { topic: "Integration with Spark", concepts: ["Spark on YARN", "Data Sharing", "Migration"], description: "Combine Hadoop with Spark." }
+          ],
+          expert: [
+            { topic: "Cluster Management", concepts: ["Ambari", "Cloudera Manager", "Scaling Clusters"], description: "Manage large Hadoop clusters." },
+            { topic: "Advanced Ecosystems", concepts: ["Oozie Workflows", "Zookeeper Coordination"], description: "Orchestrate complex workflows." },
+            { topic: "Hadoop Internals", concepts: ["Block Placement", "Rack Awareness", "Speculative Execution"], description: "Understand Hadoop's core mechanics." },
+            { topic: "Cloud Integration", concepts: ["EMR", "HDInsight", "Dataproc"], description: "Run Hadoop on cloud platforms." }
+          ]
+        },
+        tools: ["Hadoop", "HDFS", "YARN", "Hive", "Pig", "Sqoop", "Flume", "Oozie", "Ambari", "Cloudera Manager"],
+        difficulty: "intermediate"
+      },
+      {
+        title: "Dask Roadmap",
+        description: "Master Dask for parallel and distributed computing in Python, scaling data science workflows.",
+        image: "https://cdn.simpleicons.org/python/0AF", // No specific icon, using Python as proxy
+        levels: {
+          beginner: [
+            { topic: "Introduction to Dask", concepts: ["What is Dask?", "Dask vs Pandas", "Use Cases"], description: "Understand Dask's role in scaling Python code." },
+            { topic: "Dask Arrays", concepts: ["NumPy-like API", "Chunking", "Lazy Evaluation"], description: "Work with large arrays." },
+            { topic: "Dask DataFrames", concepts: ["Pandas-like API", "Pandas-like API", "Partitioning", "Operations"], description: "Handle large datasets with DataFrames." },
+            { topic: "Setup & Local Mode", concepts: ["Installation", "Jupyter Integration", "Local Cluster"], description: "Run Dask locally." }
+          ],
+          intermediate: [
+            { topic: "Task Graphs", concepts: ["Delayed Functions", "Visualize Graphs", "Compute"], description: "Build and execute computation graphs." },
+            { topic: "Distributed Computing", concepts: ["Dask Client", "Cluster Setup", "Schedulers"], description: "Scale across multiple machines." },
+            { topic: "Integration with Libraries", concepts: ["Scikit-learn", "XGBoost", "Joblib Backend"], description: "Parallelize ML workflows." },
+            { topic: "Bag & Futures", concepts: ["Unstructured Data", "Real-time Computing"], description: "Handle flexible data types." }
+          ],
+          advanced: [
+            { topic: "Performance Optimization", concepts: ["Partition Sizing", "Persist", "Avoid Spilling"], description: "Tune Dask for efficiency." },
+            { topic: "Custom Operations", concepts: ["Apply Functions", "Groupby Aggregations", "UDFs"], description: "Extend Dask with custom logic." },
+            { topic: "Deployment", concepts: ["Kubernetes", "YARN", "Cloud Providers"], description: "Deploy Dask clusters." },
+            { topic: "Monitoring", concepts: ["Dashboard", "Diagnostics", "Profiling"], description: "Monitor Dask computations." }
+          ],
+          expert: [
+            { topic: "Advanced Schedulers", concepts: ["Adaptive Scaling", "Custom Schedulers"], description: "Customize task scheduling." },
+            { topic: "Integration with Big Data", concepts: ["Parquet", "S3", "HDFS"], description: "Work with distributed storage." },
+            { topic: "Dask ML", concepts: ["Distributed Training", "Hyperparameter Tuning"], description: "Scale machine learning." },
+            { topic: "Dask Internals", concepts: ["Graph Optimization", "Task Fusion", "Memory Management"], description: "Understand Dask's architecture." }
+          ]
+        },
+        tools: ["Dask", "Jupyter", "Pandas", "NumPy", "Scikit-learn", "Kubernetes", "YARN", "AWS S3", "Coiled", "Saturn Cloud"],
+        difficulty: "intermediate"
+      },
+      {
+        title: "Airbyte Roadmap",
+        description: "Master Airbyte for open-source data integration and ELT pipelines.",
+        image: "https://airbyte.com/images/logo.svg", // Custom logo, as no simpleicons
+        levels: {
+          beginner: [
+            { topic: "Introduction to Airbyte", concepts: ["What is Airbyte?", "ELT vs ETL", "Use Cases"], description: "Understand Airbyte's role in data integration." },
+            { topic: "Installation & Setup", concepts: ["Docker Compose", "Kubernetes", "Airbyte Cloud"], description: "Set up Airbyte locally or in cloud." },
+            { topic: "Connectors Basics", concepts: ["Sources", "Destinations", "Pre-built Connectors"], description: "Connect data sources and destinations." },
+            { topic: "Basic Syncs", concepts: ["Full Refresh", "Incremental Sync", "Schedules"], description: "Run simple data synchronizations." }
+          ],
+          intermediate: [
+            { topic: "Custom Connectors", concepts: ["Connector Builder", "Python CDK", "Low-Code Connectors"], description: "Build custom data connectors." },
+            { topic: "Normalization", concepts: ["Basic Normalization", "Custom dbt Transformations"], description: "Transform data post-sync." },
+            { topic: "Monitoring & Logging", concepts: ["UI Dashboard", "Logs", "Alerts"], description: "Monitor sync jobs." },
+            { topic: "API & Automation", concepts: ["Airbyte API", "Terraform Provider", "CI/CD Integration"], description: "Automate Airbyte configurations." }
+          ],
+          advanced: [
+            { topic: "Scaling Airbyte", concepts: ["Horizontal Scaling", "Worker Pools", "High Volume Syncs"], description: "Handle large-scale data integration." },
+            { topic: "Security & Compliance", concepts: ["SSO", "Data Encryption", "Audit Logs"], description: "Secure Airbyte deployments." },
+            { topic: "Advanced Transformations", concepts: ["dbt Integration", "Custom SQL", "Data Typing"], description: "Customize data normalization." },
+            { topic: "Performance Optimization", concepts: ["Chunking", "Parallel Processing", "Resource Allocation"], description: "Optimize sync performance." }
+          ],
+          expert: [
+            { topic: "Custom Development", concepts: ["Extending Core", "Contributing to Open Source"], description: "Develop new features for Airbyte." },
+            { topic: "Hybrid Deployments", concepts: ["On-Prem + Cloud", "Multi-Region Syncs"], description: "Manage complex deployments." },
+            { topic: "Data Governance", concepts: ["Lineage Tracking", "Data Catalog Integration"], description: "Integrate with governance tools." },
+            { topic: "Airbyte Internals", concepts: ["Architecture", "Worker Model", "Connector Protocol"], description: "Understand Airbyte's core." }
+          ]
+        },
+        tools: ["Airbyte", "Docker", "Kubernetes", "dbt", "Terraform", "PostgreSQL", "BigQuery", "Snowflake", "Kafka", "GitHub"],
+        difficulty: "intermediate"
+      },
+    
+      {
+        title: "ClickHouse Roadmap",
+        description: "Master ClickHouse for high-performance analytical queries on large datasets.",
+        image: "https://cdn.simpleicons.org/clickhouse/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction to ClickHouse", concepts: ["What is ClickHouse?", "Columnar Storage", "Use Cases"], description: "Understand ClickHouse's role in OLAP." },
+            { topic: "Installation", concepts: ["Docker", "DEB/RPM Packages", "ClickHouse Cloud"], description: "Set up ClickHouse." },
+            { topic: "Data Model", concepts: ["Tables", "Columns", "Data Types", "Engines"], description: "Design basic tables." },
+            { topic: "Basic Queries", concepts: ["SELECT", "INSERT", "WHERE", "GROUP BY"], description: "Query data in ClickHouse." }
+          ],
+          intermediate: [
+            { topic: "Table Engines", concepts: ["MergeTree", "ReplicatedMergeTree", "CollapsingMergeTree"], description: "Choose appropriate engines." },
+            { topic: "Partitions & Indexes", concepts: ["Partition Keys", "Primary Keys", "Secondary Indexes"], description: "Optimize data storage." },
+            { topic: "Data Ingestion", concepts: ["Batch Inserts", "Kafka Integration", "HTTP Interface"], description: "Load data efficiently." },
+            { topic: "SQL Extensions", concepts: ["ARRAY JOIN", "WITH Clause", "Materialized Views"], description: "Use advanced SQL features." }
+          ],
+          advanced: [
+            { topic: "Clustering", concepts: ["Distributed Tables", "Sharding", "Replication"], description: "Scale across nodes." },
+            { topic: "Performance Optimization", concepts: ["Compression", "Caching", "Query Profiling"], description: "Tune for speed." },
+            { topic: "Security", concepts: ["Users & Roles", "Row-Level Security", "Encryption"], description: "Secure ClickHouse." },
+            { topic: "Integrations", concepts: ["Superset", "Tableau", "JDBC/ODBC"], description: "Connect with BI tools." }
+          ],
+          expert: [
+            { topic: "Custom Engines", concepts: ["External Dictionaries", "Custom Storage Engines"], description: "Extend ClickHouse." },
+            { topic: "Monitoring & Alerting", concepts: ["ClickHouse Keeper", "Prometheus Exporter"], description: "Monitor clusters." },
+            { topic: "High Availability", concepts: ["Zookeeper Integration", "Failover Strategies"], description: "Ensure reliability." },
+            { topic: "ClickHouse Internals", concepts: ["Merge Process", "Query Execution", "Vectorized Processing"], description: "Understand internals." }
+          ]
+        },
+        tools: ["ClickHouse", "Docker", "Kafka", "Superset", "Tableau", "Prometheus", "Grafana", "Zookeeper", "PostgreSQL"],
+        difficulty: "advanced"
+      },
+      {
+        title: "Apache Hive Roadmap",
+        description: "Master Apache Hive for querying and analyzing large datasets stored in Hadoop.",
+        image: "https://cdn.simpleicons.org/apachehive/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction to Hive", concepts: ["What is Hive?", "Hive vs SQL", "Use Cases"], description: "Understand Hive's role in big data querying." },
+            { topic: "Installation", concepts: ["Hive on Hadoop", "HiveServer2", "Beeline CLI"], description: "Set up Hive environment." },
+            { topic: "HiveQL Basics", concepts: ["CREATE TABLE", "LOAD DATA", "SELECT", "WHERE"], description: "Write basic Hive queries." },
+            { topic: "Data Types & Formats", concepts: ["Primitive Types", "Complex Types", "ORC, Parquet"], description: "Handle different data formats." }
+          ],
+          intermediate: [
+            { topic: "Partitioning & Bucketing", concepts: ["Static/Dynamic Partitioning", "Bucketing for Joins"], description: "Optimize data organization." },
+            { topic: "Joins & Aggregations", concepts: ["INNER/OUTER Joins", "GROUP BY", "HAVING"], description: "Perform complex queries." },
+            { topic: "UDFs & Scripts", concepts: ["User-Defined Functions", "Transform Scripts"], description: "Extend Hive with custom logic." },
+            { topic: "Views & Indexes", concepts: ["Materialized Views", "Bitmap Indexes"], description: "Improve query performance." }
+          ],
+          advanced: [
+            { topic: "Hive on Tez/LLAP", concepts: ["Execution Engines", "Interactive Queries"], description: "Enhance performance with Tez." },
+            { topic: "Acid Transactions", concepts: ["INSERT/UPDATE/DELETE", "Transactional Tables"], description: "Enable ACID compliance." },
+            { topic: "Security", concepts: ["Ranger Integration", "Authorization", "Encryption"], description: "Secure Hive data." },
+            { topic: "Optimization", concepts: ["Vectorization", "Cost-Based Optimizer"], description: "Tune Hive queries." }
+          ],
+          expert: [
+            { topic: "Integration with Ecosystem", concepts: ["Spark SQL", "Presto", "Impala"], description: "Use Hive with other tools." },
+            { topic: "Monitoring & Tuning", concepts: ["Hive Metastore", "Performance Metrics"], description: "Monitor Hive clusters." },
+            { topic: "Custom SerDes", concepts: ["Serializers/Deserializers", "Custom Formats"], description: "Handle custom data formats." },
+            { topic: "Hive Internals", concepts: ["Query Compilation", "Execution Pipeline"], description: "Understand Hive's architecture." }
+          ]
+        },
+        tools: ["Hive", "Hadoop", "Tez", "Beeline", "Ambari", "Ranger", "Spark", "Presto", "Impala"],
+        difficulty: "intermediate"
+      },
+      {
+        title: "Apache Superset Roadmap",
+        description: "Master Apache Superset for open-source business intelligence and data visualization.",
+        image: "https://cdn.simpleicons.org/apache/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction to Superset", concepts: ["What is Superset?", "BI Tools Comparison", "Use Cases"], description: "Understand Superset's role in data exploration." },
+            { topic: "Installation", concepts: ["Docker", "Pip Install", "Helm Chart"], description: "Set up Superset." },
+            { topic: "Connecting Data Sources", concepts: ["Databases", "CSV Upload", "Druid Integration"], description: "Connect to data." },
+            { topic: "Basic Charts", concepts: ["Bar", "Line", "Pie", "Table"], description: "Create simple visualizations." }
+          ],
+          intermediate: [
+            { topic: "Dashboards", concepts: ["Layout", "Filters", "Interactivity"], description: "Build interactive dashboards." },
+            { topic: "SQL Lab", concepts: ["Query Editor", "Scheduled Queries", "CSV Export"], description: "Run advanced queries." },
+            { topic: "Datasets & Metrics", concepts: ["Virtual Datasets", "Custom Metrics", "Dimensions"], description: "Define data models." },
+            { topic: "Plugins", concepts: ["Custom Viz Plugins", "Preset Integration"], description: "Extend Superset." }
+          ],
+          advanced: [
+            { topic: "Security & Auth", concepts: ["RBAC", "OAuth", "LDAP"], description: "Manage access control." },
+            { topic: "Caching & Async Queries", concepts: ["Redis Cache", "Celery Workers"], description: "Improve performance." },
+            { topic: "Embedding", concepts: ["Iframe Embedding", "API Access"], description: "Embed dashboards in apps." },
+            { topic: "Alerts & Reports", concepts: ["Scheduled Emails", "Slack Integration"], description: "Set up notifications." }
+          ],
+          expert: [
+            { topic: "Scaling Superset", concepts: ["Kubernetes Deployment", "Load Balancing"], description: "Deploy at scale." },
+            { topic: "Custom Development", concepts: ["React Components", "Backend Extensions"], description: "Customize core features." },
+            { topic: "Monitoring", concepts: ["StatsD", "Prometheus Integration"], description: "Monitor Superset." },
+            { topic: "Superset Internals", concepts: ["Architecture", "Metadata Database"], description: "Understand internals." }
+          ]
+        },
+        tools: ["Superset", "Docker", "PostgreSQL", "Redis", "Celery", "Druid", "BigQuery", "Snowflake", "Kubernetes", "Helm"],
+        difficulty: "intermediate"
+      },
+      {
+        title: "Metabase Roadmap",
+        description: "Master Metabase for open-source business intelligence and easy-to-use data querying.",
+        image: "https://www.metabase.com/images/logo.svg", // Custom logo
+        levels: {
+          beginner: [
+            { topic: "Introduction to Metabase", concepts: ["What is Metabase?", "Self-Hosted vs Cloud", "Use Cases"], description: "Understand Metabase's role in BI." },
+            { topic: "Installation", concepts: ["Docker", "JAR File", "Heroku"], description: "Set up Metabase." },
+            { topic: "Connecting Databases", concepts: ["SQL Databases", "NoSQL", "BigQuery"], description: "Connect data sources." },
+            { topic: "Basic Questions", concepts: ["GUI Query Builder", "Filters", "Summarizations"], description: "Create simple queries." }
+          ],
+          intermediate: [
+            { topic: "Dashboards", concepts: ["Adding Cards", "Filters", "Auto-Refresh"], description: "Build interactive dashboards." },
+            { topic: "SQL Queries", concepts: ["Native Query Editor", "Variables", "Field Filters"], description: "Write advanced SQL." },
+            { topic: "Models & Metrics", concepts: ["Saved Questions", "Custom Metrics"], description: "Define reusable data models." },
+            { topic: "Sharing & Embedding", concepts: ["Public Links", "Iframe Embedding"], description: "Share insights." }
+          ],
+          advanced: [
+            { topic: "Permissions & Groups", concepts: ["Data Access Control", "Sandboxes"], description: "Manage user access." },
+            { topic: "Auditing & Monitoring", concepts: ["Audit Logs", "Usage Analytics"], description: "Track usage." },
+            { topic: "Customizations", concepts: ["Whitelabeling", "Custom Maps"], description: "Customize appearance." },
+            { topic: "Integrations", concepts: ["Slack Alerts", "API Usage"], description: "Integrate with other tools." }
+          ],
+          expert: [
+            { topic: "Scaling Metabase", concepts: ["Multi-Node Setup", "Load Balancing"], description: "Handle large deployments." },
+            { topic: "Custom Development", concepts: ["Plugin Development", "Frontend Modifications"], description: "Extend Metabase." },
+            { topic: "Performance Optimization", concepts: ["Query Caching", "Database Tuning"], description: "Optimize for speed." },
+            { topic: "Metabase Internals", concepts: ["Architecture", "Query Processor"], description: "Understand core mechanics." }
+          ]
+        },
+        tools: ["Metabase", "Docker", "PostgreSQL", "MySQL", "BigQuery", "Slack", "Heroku", "AWS", "Google Cloud", "Azure"],
+        difficulty: "beginner"
+      },
+      {
+        title: "Apache Mahout Roadmap",
+        description: "Master Apache Mahout for scalable machine learning on big data platforms.",
+        image: "https://cdn.simpleicons.org/apache/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction to Mahout", concepts: ["What is Mahout?", "ML on Hadoop", "Use Cases"], description: "Understand Mahout's role in scalable ML." },
+            { topic: "Setup", concepts: ["Maven Integration", "Hadoop Compatibility"], description: "Install Mahout." },
+            { topic: "Basic Algorithms", concepts: ["Clustering", "Classification", "Recommendation"], description: "Run simple ML tasks." },
+            { topic: "Data Preparation", concepts: ["Vectorization", "Data Formats"], description: "Prepare data for Mahout." }
+          ],
+          intermediate: [
+            { topic: "Clustering", concepts: ["K-Means", "Canopy Clustering", "Fuzzy K-Means"], description: "Group data." },
+            { topic: "Classification", concepts: ["Naive Bayes", "Random Forest", "Logistic Regression"], description: "Classify data." },
+            { topic: "Recommendation", concepts: ["Collaborative Filtering", "Matrix Factorization"], description: "Build recommenders." },
+            { topic: "Scala DSL", concepts: ["Mahout Scala Bindings", "Distributed Linear Algebra"], description: "Use Scala for ML." }
+          ],
+          advanced: [
+            { topic: "Distributed Algorithms", concepts: ["MapReduce Integration", "Spark Engine"], description: "Scale algorithms." },
+            { topic: "Model Evaluation", concepts: ["Cross-Validation", "Metrics Calculation"], description: "Evaluate models." },
+            { topic: "Custom Algorithms", concepts: ["Extending Mahout", "New Samplers"], description: "Build custom ML." },
+            { topic: "Performance Tuning", concepts: ["Parameter Optimization", "Resource Allocation"], description: "Tune for efficiency." }
+          ],
+          expert: [
+            { topic: "Integration with Ecosystem", concepts: ["Hive", "Pig", "Spark MLlib"], description: "Combine with big data tools." },
+            { topic: "Advanced Math", concepts: ["Linear Algebra", "Samsara Environment"], description: "Use advanced math." },
+            { topic: "Contributing", concepts: ["Open Source Development", "Pull Requests"], description: "Contribute to Mahout." },
+            { topic: "Mahout Internals", concepts: ["Algorithm Implementations", "Distributed Context"], description: "Understand core." }
+          ]
+        },
+        tools: ["Mahout", "Hadoop", "Spark", "Maven", "Scala", "Hive", "Pig", "Zeppelin", "Jupyter"],
+        difficulty: "advanced"
+      },
+      {
+  title: "Apache YARN Roadmap",
+  description: "Master Apache Hadoop YARN for resource management and job scheduling in big data clusters.",
+  image: "https://cdn.simpleicons.org/apachehadoop/66CCFF",
+  levels: {
+    beginner: [
+      { topic: "Introduction", concepts: ["What is YARN?", "History in Hadoop", "Why YARN?"], description: "Understand YARN’s role in Hadoop ecosystem." },
+      { topic: "Architecture Basics", concepts: ["ResourceManager", "NodeManager", "ApplicationMaster"], description: "Learn about YARN components." },
+      { topic: "Installation", concepts: ["Standalone Setup", "Cluster Setup"], description: "Set up YARN environment." },
+      { topic: "First Application", concepts: ["MapReduce on YARN", "Basic Commands"], description: "Run your first job." }
+    ],
+    intermediate: [
+      { topic: "Resource Management", concepts: ["Containers", "Scheduling", "Fair Scheduler"], description: "Manage resources effectively." },
+      { topic: "Application Lifecycle", concepts: ["Job Submission", "Execution Flow"], description: "Understand YARN job execution." },
+      { topic: "Monitoring", concepts: ["YARN UI", "Logs", "Metrics"], description: "Track and debug jobs." },
+      { topic: "YARN with Other Frameworks", concepts: ["Spark on YARN", "Tez", "Flink"], description: "Integrate compute engines." }
+    ],
+    advanced: [
+      { topic: "Cluster Configuration", concepts: ["High Availability RM", "Federation"], description: "Configure large clusters." },
+      { topic: "Performance Tuning", concepts: ["Scheduler Optimization", "Container Reuse"], description: "Tune YARN for workloads." },
+      { topic: "Security", concepts: ["Kerberos", "ACLs", "SSL"], description: "Secure the YARN cluster." },
+      { topic: "Capacity Planning", concepts: ["Queue Management", "Resource Quotas"], description: "Plan resources for multi-tenancy." }
+    ],
+    expert: [
+      { topic: "High Availability", concepts: ["ResourceManager HA", "Failover"], description: "Ensure uptime for mission-critical clusters." },
+      { topic: "Internals", concepts: ["Scheduling Algorithms", "ApplicationMaster Protocols"], description: "Dive into YARN internals." },
+      { topic: "Advanced Integrations", concepts: ["Kubernetes on YARN", "Cloud Deployments"], description: "Hybrid and cloud setups." },
+      { topic: "Scaling Strategies", concepts: ["Large-Scale Deployments", "Federated YARN"], description: "Operate YARN at scale." }
+    ]
+  },
+  tools: ["Hadoop", "YARN", "MapReduce", "Spark", "Tez", "Flink", "Zookeeper", "Kubernetes"],
+  difficulty: "advanced"
+},{
+  "title": "Databricks Platform",
+  "description": "Accelerate data engineering, data science, and machine learning with Databricks, the unified analytics platform.",
+  "image": "https://cdn.simpleicons.org/databricks/FF3621",
+  "levels": {
+    "beginner": [
+      { "topic": "Introduction", "concepts": ["What is Databricks?", "Unified Analytics", "Why Databricks?"], "description": "Learn about Databricks and its role in simplifying data workflows." },
+      { "topic": "Setup and Getting Started", "concepts": ["Create a Databricks Workspace", "Notebooks", "Clusters"], "description": "Set up your Databricks environment and start with interactive notebooks." },
+      { "topic": "Data Ingestion", "concepts": ["CSV Upload", "Databricks Delta", "Apache Kafka"], "description": "Learn how to bring data into Databricks and manage data pipelines." },
+      { "topic": "Basic Data Analysis", "concepts": ["DataFrames", "SQL Queries", "Visualization"], "description": "Perform basic data exploration and visualization in Databricks." }
+    ],
+    "intermediate": [
+      { "topic": "Data Engineering", "concepts": ["Delta Lake", "ETL Pipelines", "Data Versioning"], "description": "Build scalable ETL pipelines using Databricks." },
+      { "topic": "Machine Learning Basics", "concepts": ["MLflow", "Training Models", "Hyperparameter Tuning"], "description": "Get started with machine learning using Databricks and MLflow." },
+      { "topic": "Collaborative Workflows", "concepts": ["Notebooks Collaboration", "Version Control", "Teams and Permissions"], "description": "Collaborate with your team in a shared environment." },
+      { "topic": "Advanced Data Visualization", "concepts": ["Plotly", "Dashboards", "Real-Time Analytics"], "description": "Create interactive dashboards and visualizations for real-time data." }
+    ],
+    "advanced": [
+      { "topic": "Scaling with Apache Spark", "concepts": ["Spark Clusters", "Distributed Computing", "Optimization Techniques"], "description": "Scale data processing using Apache Spark in Databricks." },
+      { "topic": "Advanced Machine Learning", "concepts": ["Deep Learning", "Model Deployment", "AutoML"], "description": "Leverage advanced machine learning tools for more sophisticated models." },
+      { "topic": "Data Security & Governance", "concepts": ["Role-Based Access Control", "Data Encryption", "Compliance"], "description": "Ensure data security and compliance within your Databricks environment." },
+      { "topic": "Pipeline Orchestration", "concepts": ["Databricks Jobs", "Airflow Integration", "Scheduled Workflows"], "description": "Automate and manage workflows using Databricks and external tools." }
+    ],
+    "expert": [
+      { "topic": "Custom Integrations", "concepts": ["Databricks REST API", "Third-Party Integrations", "Custom Libraries"], "description": "Build custom integrations to extend the power of Databricks." },
+      { "topic": "Real-Time Data Streams", "concepts": ["Structured Streaming", "Kafka Integration", "Event-Driven Architecture"], "description": "Implement real-time data streaming applications with Databricks." },
+      { "topic": "Scaling for Big Data", "concepts": ["Data Lakehouse", "Sharding", "Multi-Region Architecture"], "description": "Optimize Databricks for processing massive datasets at scale." },
+      { "topic": "Advanced Automation and CI/CD", "concepts": ["Databricks REST API", "CI/CD Pipelines", "Automated Testing"], "description": "Integrate Databricks with your CI/CD workflows for automated deployment and testing." }
+    ]
+  },
+  "tools": ["Databricks", "Apache Spark", "Delta Lake", "MLflow", "Apache Kafka", "Databricks REST API"],
+  "difficulty": "beginner"
+},{
+  "title": "n8n Roadmap",
+  "description": "Learn n8n, the open-source workflow automation tool for integrating APIs, services, and data pipelines.",
+  "image": "https://cdn.simpleicons.org/n8n/EA4C89",
+  "levels": {
+    "beginner": [
+      { "topic": "Introduction", "concepts": ["What is n8n?", "Open Source & Self-Hosting", "Why n8n?"], "description": "Understand n8n and its role in workflow automation." },
+      { "topic": "Installation", "concepts": ["Docker Setup", "Local Install", "Cloud n8n"], "description": "Set up n8n environment." },
+      { "topic": "Basics of Workflows", "concepts": ["Nodes", "Triggers", "Connections"], "description": "Learn how workflows are built." },
+      { "topic": "First Workflow", "concepts": ["HTTP Request Node", "Webhook Trigger"], "description": "Create and run your first automation." }
+    ],
+    "intermediate": [
+      { "topic": "Integrations", "concepts": ["APIs", "Databases", "File Storage"], "description": "Connect n8n with external systems." },
+      { "topic": "Data Handling", "concepts": ["Expressions", "JSON", "Transformations"], "description": "Manipulate and pass data between nodes." },
+      { "topic": "Error Handling", "concepts": ["Error Workflow", "Retry Logic"], "description": "Handle workflow failures gracefully." },
+      { "topic": "Version Control", "concepts": ["Workflow Export", "Git Integration"], "description": "Manage workflows in teams." }
+    ],
+    "advanced": [
+      { "topic": "Self-Hosting & Scaling", "concepts": ["Docker Compose", "Kubernetes", "High Availability"], "description": "Deploy n8n in production." },
+      { "topic": "Advanced Nodes", "concepts": ["Code Node", "Function Node", "Custom Nodes"], "description": "Extend workflows with custom logic." },
+      { "topic": "Security", "concepts": ["User Management", "OAuth2", "API Keys"], "description": "Secure your workflows and access." },
+      { "topic": "Workflow Optimization", "concepts": ["Concurrency", "Execution Modes", "Queue Workers"], "description": "Improve workflow efficiency." }
+    ],
+    "expert": [
+      { "topic": "Building Custom Nodes", "concepts": ["Node Development", "n8n Core APIs"], "description": "Create your own integrations." },
+      { "topic": "Advanced Automation Patterns", "concepts": ["Event-Driven Workflows", "ETL Pipelines", "IoT Automations"], "description": "Design complex automation." },
+      { "topic": "Integration at Scale", "concepts": ["Multi-Instance Setup", "Enterprise Features"], "description": "Run n8n in large organizations." },
+      { "topic": "Extending n8n", "concepts": ["Community Nodes", "Plugin Development", "Custom Deployment Strategies"], "description": "Contribute and extend n8n." }
+    ]
+  },
+  "tools": ["n8n", "APIs", "Databases", "Docker", "Kubernetes", "Git", "OAuth2"],
+  "difficulty": "beginner"
+},
+      {
+        title: "Apache Druid Roadmap",
+        description: "Master Apache Druid for real-time analytics and OLAP queries on event data.",
+        image: "https://cdn.simpleicons.org/apache/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction", concepts: ["What is Druid?", "Columnar Storage", "Use Cases"], description: "Understand Druid for analytics." },
+            { topic: "Core Concepts", concepts: ["Datasources", "Segments", "Ingestion", "Query Types"], description: "Learn data model." },
+            { topic: "Installation", concepts: ["Single Server", "Docker", "Cluster"], description: "Set up Druid." },
+            { topic: "Basic Ingestion", concepts: ["Batch", "Streaming", "JSON Specs"], description: "Ingest data." }
+          ],
+          intermediate: [
+            { topic: "Querying", concepts: ["Druid SQL", "GroupBy", "TopN", "Timeseries"], description: "Query data." },
+            { topic: "Schema Design", concepts: ["Dimensions", "Metrics", "Rollups"], description: "Design datasources." },
+            { topic: "Real-Time Ingestion", concepts: ["Kafka", "Tranquility", "Firehose"], description: "Stream data." },
+            { topic: "UI & Monitoring", concepts: ["Console", "Metrics"], description: "Manage Druid." }
+          ],
+          advanced: [
+            { topic: "Cluster Configuration", concepts: ["Deep Storage", "Overlord", "Coordinator"], description: "Configure clusters." },
+            { topic: "Performance Tuning", concepts: ["Segment Optimization", "Query Caching"], description: "Optimize queries." },
+            { topic: "Security", concepts: ["Authentication", "Authorization"], description: "Secure Druid." },
+            { topic: "Extensions", concepts: ["Custom Aggregators", "Lookups"], description: "Extend functionality." }
+          ],
+          expert: [
+            { topic: "High Availability", concepts: ["Replication", "Failover"], description: "Ensure uptime." },
+            { topic: "Advanced Integrations", concepts: ["Superset", "Grafana"], description: "Integrate with tools." },
+            { topic: "Druid Internals", concepts: ["Indexing Service", "Query Processing"], description: "Understand architecture." },
+            { topic: "Scaling Strategies", concepts: ["Horizontal Scaling", "Multi-Tenancy"], description: "Scale large deployments." }
+          ]
+        },
+        tools: ["Druid", "Kafka", "Zookeeper", "Superset", "Docker", "Kubernetes", "Prometheus", "Grafana"],
+        difficulty: "advanced"
+      }
+    ];
+   
+    // === EXPANDED JOB ROLES DATA ===
+    const jobRoles = [
+      {
+        title: "Data Engineer",
+        description: "Build and maintain data pipelines, storage, and infrastructure",
+        image: "https://cdn.simpleicons.org/apacheairflow/0AF",
+        responsibilities: [
+          "Design and develop ETL/ELT pipelines for data ingestion and transformation",
+          "Ensure data quality, reliability, and scalability across systems",
+          "Work with cloud platforms (AWS, GCP, Azure) to build data lakes and warehouses",
+          "Optimize data models for performance and efficiency",
+          "Collaborate with data scientists and analysts to deliver clean, usable data",
+          "Implement data governance and security policies",
+          "Monitor and troubleshoot data pipelines",
+          "Document data architecture and processes"
+        ],
+        skills: ["SQL", "Python", "ETL", "Apache Spark", "Kafka", "Airflow", "dbt", "Data Modeling", "Cloud (AWS/GCP/Azure)", "Docker", "Linux", "NoSQL", "REST APIs", "Terraform", "Kubernetes", "Data Warehousing", "Data Lake", "Stream Processing", "CI/CD", "Git"],
+        tools: ["Databricks", "Snowflake", "Fivetran", "dbt", "Kubernetes", "AWS Redshift", "Azure Data Factory", "Google BigQuery", "Apache Kafka", "Airflow", "MongoDB", "Redis", "Elasticsearch", "Flink", "Docker", "GitHub", "GitLab", "Terraform", "CloudFormation", "Prometheus", "Grafana"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹6L – ₹9L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹10L – ₹18L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹18L – ₹30L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹30L – ₹50L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹50L – ₹80L+</td></tr></table>",
+        tips: "Master Spark and Airflow. Learn cloud data services (AWS S3, Redshift). Build real-time pipelines. Get certified in AWS/GCP. Learn infrastructure as code (Terraform)."
+      },
+      {
+        title: "Data Analyst",
+        description: "Analyze and visualize data to provide insights",
+        image: "https://img.icons8.com/fluency/96/microsoft.png",
+        responsibilities: [
+          "Generate SQL queries to extract and analyze data from databases",
+          "Create dashboards and reports using Power BI or Tableau",
+          "Identify trends, anomalies, and business insights",
+          "Support marketing, finance, or operations teams with data-driven recommendations",
+          "Clean and preprocess data for reporting and analysis",
+          "Perform A/B testing and statistical analysis",
+          "Document findings and present to stakeholders",
+          "Maintain data dictionaries and metadata"
+        ],
+        skills: ["SQL", "Excel", "Power BI", "Tableau", "Statistics", "Python (basic)", "DAX", "Data Cleaning", "Data Storytelling", "Data Visualization", "A/B Testing", "Hypothesis Testing", "Data Modeling", "Google Analytics", "Looker", "Pandas"],
+        tools: ["Power BI", "Excel", "Google Sheets", "Looker Studio", "Mode Analytics", "Snowflake", "BigQuery", "Airflow", "GitHub", "GitLab", "Tableau", "Qlik", "Google Analytics", "Mixpanel", "Amplitude", "R", "Jupyter Notebook"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹4L – ₹7L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹7L – ₹12L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹12L – ₹18L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹18L – ₹28L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹28L – ₹45L+</td></tr></table>",
+        tips: "Master Power BI and DAX. Learn data modeling. Build a dashboard portfolio. Practice storytelling. Learn statistical analysis. Get proficient in Excel advanced features."
+      },
+      {
+        title: "Data Scientist",
+        description: "Build predictive models, apply ML, extract insights",
+        image: "https://img.icons8.com/color/96/data-science.png",
+        responsibilities: [
+          "Develop machine learning models for classification, regression, and clustering",
+          "Analyze large datasets to extract actionable insights",
+          "Present findings using visualizations and reports",
+          "Deploy models into production with MLOps practices",
+          "Collaborate with business teams to define problems and solutions",
+          "Conduct A/B testing and experiment design",
+          "Research and implement new ML algorithms",
+          "Monitor model performance and drift"
+        ],
+        skills: ["Python/R", "Machine Learning", "Statistics", "Pandas", "Scikit-learn", "TensorFlow/PyTorch", "Data Visualization", "SQL", "Hypothesis Testing", "A/B Testing", "Feature Engineering", "Model Evaluation", "Deep Learning", "Natural Language Processing", "Computer Vision", "Time Series Analysis", "Git", "Docker"],
+        tools: ["Jupyter Notebook", "VS Code", "Git", "Docker", "MLflow", "Kubeflow", "Tableau", "Power BI", "Google Colab", "PyCharm", "Kafka", "Spark", "Airflow", "Flink", "GitHub", "GitLab", "Weights & Biases", "TensorBoard", "Streamlit", "Dash", "RStudio"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹5L – ₹8L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹9L – ₹18L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹18L – ₹28L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹28L – ₹45L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹45L – ₹75L+</td></tr></table>",
+        tips: "Build a strong GitHub portfolio. Participate in Kaggle. Learn ML deployment. Focus on business impact. Master deep learning frameworks. Learn MLOps practices."
+      },
+      {
+        title: "Machine Learning Engineer",
+        description: "Deploy ML models in production",
+        image: "https://cdn.simpleicons.org/tensorflow/0AF",
+        responsibilities: [
+          "Convert ML prototypes into scalable APIs and microservices",
+          "Monitor model performance, drift, and latency",
+          "Build CI/CD pipelines for ML models",
+          "Optimize inference speed and cost",
+          "Integrate models into production applications",
+          "Design and implement feature stores",
+          "Manage model versioning and rollback",
+          "Ensure scalability and reliability of ML systems"
+        ],
+        skills: ["Python", "ML", "APIs (Flask/FastAPI)", "Docker", "Kubernetes", "CI/CD", "Model Monitoring", "Feature Stores", "MLOps", "TensorFlow/PyTorch", "Model Optimization", "Cloud Platforms", "Data Engineering", "Git", "Terraform", "Monitoring Tools"],
+        tools: ["TensorFlow", "PyTorch", "SageMaker", "Vertex AI", "MLflow", "Prometheus", "Grafana", "Argo CD", "GitHub Actions", "Datadog", "Kafka", "Airflow", "Flink", "Elasticsearch", "Docker", "Kubernetes", "GitHub", "GitLab", "Terraform", "Weights & Biases", "Seldon", "KFServing"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹7L – ₹10L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹12L – ₹22L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹22L – ₹35L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹35L – ₹55L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹55L – ₹90L+</td></tr></table>",
+        tips: "Learn Docker & Kubernetes. Master MLflow and model registries. Understand CI/CD. Work on real-time inference. Learn cloud ML services. Get certified in cloud platforms."
+      },
+      {
+        title: "AI / Deep Learning Specialist",
+        description: "Advanced ML, NLP, computer vision",
+        image: "https://cdn.simpleicons.org/openai/0AF",
+        responsibilities: [
+          "Develop and fine-tune large language models (LLMs) and vision models",
+          "Implement NLP pipelines for text classification, summarization, and translation",
+          "Work with computer vision models for object detection and image recognition",
+          "Research and implement cutting-edge AI techniques",
+          "Optimize models for inference and deployment",
+          "Build generative AI applications",
+          "Evaluate and benchmark AI models",
+          "Stay current with AI research"
+        ],
+        skills: ["Python", "TensorFlow/PyTorch", "NLP frameworks", "GPU computing", "Transformers", "RAG", "LangChain", "Fine-tuning", "Computer Vision", "Large Language Models", "Prompt Engineering", "Generative AI", "Reinforcement Learning", "Multimodal AI", "Distributed Training", "Model Compression"],
+        tools: ["Hugging Face", "LangChain", "OpenAI API", "NVIDIA GPUs", "Weights & Biases", "MLflow", "Kubeflow", "PyTorch Lightning", "Docker", "Kubernetes", "GitHub", "GitLab", "Google Colab", "Jupyter", "TensorBoard", "ONNX", "TorchServe", "DeepSpeed", "FSDP"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹8L – ₹12L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹14L – ₹25L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹25L – ₹40L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹40L – ₹65L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹65L – ₹1.2Cr+</td></tr></table>",
+        tips: "Study transformers and LLMs. Work with Hugging Face. Build generative AI projects. Publish on GitHub. Read research papers. Learn distributed training techniques."
+      },
+      {
+        title: "Data Architect",
+        description: "Design large-scale data systems and storage",
+        image: "https://cdn.simpleicons.org/aws/0AF",
+        responsibilities: [
+          "Design data lakes, warehouses, and ETL pipelines",
+          "Define data governance, security, and compliance policies",
+          "Choose cloud storage and processing technologies",
+          "Mentor junior engineers and lead technical decisions",
+          "Ensure scalability and performance of data systems",
+          "Develop data modeling standards",
+          "Evaluate and select data technologies",
+          "Create enterprise data strategies"
+        ],
+        skills: ["Data Modeling", "Cloud Architecture", "SQL/NoSQL", "Kimball", "Snowflake", "Databricks", "Data Governance", "Security", "Data Integration", "ETL/ELT", "Big Data", "Data Mesh", "Data Lakehouse", "Master Data Management", "Data Catalog", "Metadata Management"],
+        tools: ["AWS Redshift", "Azure Synapse", "Google BigQuery", "ER/Studio", "Informatica", "dbt", "Databricks", "Alation", "Airflow", "Kafka", "Flink", "Elasticsearch", "MongoDB", "Cassandra", "Docker", "GitHub", "Collibra", "DataHub", "Apache Atlas", "Terraform", "CloudFormation"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹8L – ₹12L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹14L – ₹24L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹24L – ₹40L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹40L – ₹65L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹65L – ₹1Cr+</td></tr></table>",
+        tips: "Learn cloud data services. Master data modeling. Get TOGAF or cloud certification. Focus on scalability. Understand data governance frameworks. Learn data mesh concepts. Get hands-on with all major cloud providers."
+      },
+      {
+        title: "BI Developer",
+        description: "Build dashboards and reporting tools",
+        image: "https://img.icons8.com/fluency/96/microsoft.png",
+        responsibilities: [
+          "Design star/snowflake schemas for data warehouses",
+          "Build interactive dashboards with drill-down capabilities",
+          "Ensure data accuracy and consistency",
+          "Train business users on BI tools",
+          "Develop semantic layers for self-service analytics",
+          "Optimize report performance",
+          "Create data dictionaries and documentation",
+          "Integrate multiple data sources"
+        ],
+        skills: ["DAX", "SQL", "Data Modeling", "ETL", "Power BI", "Tableau", "Looker", "Data Warehousing", "Semantic Layers", "Data Visualization", "Dashboard Design", "Performance Optimization", "Data Storytelling", "Requirements Gathering", "User Training"],
+        tools: ["Power BI", "Tableau", "Looker", "SSIS", "Snowflake", "Redshift", "Azure Synapse", "dbt", "Power Query", "Airflow", "GitHub", "GitLab", "Qlik", "MicroStrategy", "ThoughtSpot", "Sigma", "Mode", "Looker Studio"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹4L – ₹7L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹8L – ₹14L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹14L – ₹22L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹22L – ₹35L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹35L – ₹55L+</td></tr></table>",
+        tips: "Master DAX and Power BI. Learn Kimball methodology. Focus on performance optimization. Understand KPIs. Learn data modeling best practices. Build a portfolio of dashboards."
+      },
+      {
+        title: "Statistician",
+        description: "Apply statistical methods to analyze data",
+        image: "https://img.icons8.com/office/96/statistics.png",
+        responsibilities: [
+          "Design experiments and surveys for data collection",
+          "Apply statistical tests and models to analyze data",
+          "Estimate parameters and test hypotheses",
+          "Validate models and assumptions",
+          "Communicate results to non-technical stakeholders",
+          "Develop statistical methodologies",
+          "Ensure data quality and integrity",
+          "Review research studies and clinical trials"
+        ],
+        skills: ["R/Python", "Probability", "Hypothesis Testing", "Regression", "Experimental Design", "ANOVA", "Bayesian Statistics", "Survival Analysis", "Multivariate Analysis", "Time Series", "Clinical Trials", "Survey Sampling", "Statistical Computing", "Reproducible Research"],
+        tools: ["R", "Python", "JASP", "SPSS", "SAS", "Stata", "Jupyter", "LaTeX", "GitHub", "GitLab", "RStudio", "Shiny", "knitr", "rmarkdown", "ggplot2", "lme4", "brms", "Stan", "JMP", "Minitab"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹5L – ₹8L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹8L – ₹14L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹14L – ₹22L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹22L – ₹35L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹35L – ₹55L+</td></tr></table>",
+        tips: "Master R and statistical theory. Learn experimental design. Practice reproducible research. Publish findings. Get domain expertise in healthcare, finance, or social sciences."
+      },
+      {
+        title: "Data Visualization Specialist",
+        description: "Communicate data insights visually",
+        image: "https://img.icons8.com/color/96/data-visualization.png",
+        responsibilities: [
+          "Design dashboards and visualizations for clarity and impact",
+          "Use D3.js or Power BI for custom interactive visuals",
+          "Apply design principles (color, layout, typography)",
+          "Ensure accessibility and usability",
+          "Collaborate with stakeholders on visual storytelling",
+          "Develop visualization standards and guidelines",
+          "Create infographics and data stories",
+          "Evaluate visualization effectiveness"
+        ],
+        skills: ["D3.js", "Tableau", "Figma", "Design", "Storytelling", "Python (Matplotlib/Seaborn)", "JavaScript", "CSS", "UX Principles", "Data Design", "Information Architecture", "User Research", "Prototyping", "Accessibility", "Animation", "Illustration"],
+        tools: ["Tableau", "D3.js", "Figma", "Adobe Illustrator", "Power BI", "Plotly", "Chart.js", "Canva", "GitHub", "GitLab", "Sketch", "InVision", "Zeplin", "Framer", "After Effects", "Blender", "Mapbox", "Deck.gl", "Observable", "RAWGraphs"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹5L – ₹8L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹8L – ₹15L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹15L – ₹25L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹25L – ₹40L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹40L – ₹65L+</td></tr></table>",
+        tips: "Learn design fundamentals. Master D3.js or Tableau. Build a strong portfolio. Focus on storytelling. Learn user research methods. Study information design principles."
+      },
+      {
+        title: "MLOps Engineer",
+        description: "Deploy, monitor, and maintain ML models",
+        image: "https://cdn.simpleicons.org/kubernetes/0AF",
+        responsibilities: [
+          "Automate ML pipelines using CI/CD",
+          "Set up model monitoring and alerting",
+          "Manage model versioning and rollback",
+          "Secure and scale ML infrastructure",
+          "Bridge data science and DevOps teams",
+          "Implement feature stores and data validation",
+          "Optimize model serving and inference",
+          "Ensure reproducibility and auditability"
+        ],
+        skills: ["CI/CD", "Docker", "Kubernetes", "MLflow", "Airflow", "Prometheus", "Model Registry", "Feature Store", "Cloud Platforms", "Infrastructure as Code", "Monitoring", "Security", "GitOps", "Observability", "Performance Optimization", "Model Serving"],
+        tools: ["GitHub Actions", "Argo CD", "Kubeflow", "Seldon", "Datadog", "MLflow", "EKS", "GKE", "Terraform", "Kafka", "Flink", "Elasticsearch", "Docker", "Kubernetes", "GitHub", "GitLab", "Jenkins", "CircleCI", "Spinnaker", "Istio", "Knative"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹8L – ₹12L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹14L – ₹25L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹25L – ₹40L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹40L – ₹65L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹65L – ₹1Cr+</td></tr></table>",
+        tips: "Learn DevOps tools. Master Kubernetes. Get cloud certified. Understand ML lifecycle. Learn infrastructure as code. Study GitOps practices. Focus on observability."
+      },
+      {
+        title: "Analytics Translator / Data Product Manager",
+        description: "Connect data teams with business units",
+        image: "https://img.icons8.com/color/96/business-consultant.png",
+        responsibilities: [
+          "Translate business problems into data requirements",
+          "Prioritize analytics projects based on impact",
+          "Facilitate communication between technical and non-technical teams",
+          "Measure the ROI of data initiatives",
+          "Define KPIs and success metrics",
+          "Manage data product roadmaps",
+          "Conduct stakeholder interviews",
+          "Create business cases for data investments"
+        ],
+        skills: ["Communication", "Storytelling", "Data Literacy", "Business Acumen", "Project Management", "Stakeholder Management", "Requirements Gathering", "Product Management", "Strategic Planning", "Financial Analysis", "Negotiation", "Influence", "Agile", "Scrum", "User Research"],
+        tools: ["Jira", "Confluence", "Figma", "Slack", "Miro", "Notion", "Power BI", "Tableau", "Excel", "Google Workspace", "Asana", "Trello", "Monday.com", "Airtable", "Salesforce", "HubSpot", "Zendesk", "Mixpanel", "Amplitude", "Looker"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹6L – ₹10L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹10L – ₹18L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹18L – ₹30L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹30L – ₹50L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹50L – ₹80L+</td></tr></table>",
+        tips: "Improve soft skills. Learn domain knowledge. Be the bridge, not the bottleneck. Focus on business value. Learn product management frameworks. Develop financial acumen."
+      },
+      {
+        title: "Data Quality Engineer",
+        description: "Ensure accuracy, consistency, and reliability of data",
+        image: "https://cdn.simpleicons.org/testcov/0AF",
+        responsibilities: [
+          "Design and implement data validation rules",
+          "Monitor data pipelines for anomalies",
+          "Build automated data quality checks",
+          "Collaborate with engineers and analysts on data issues",
+          "Report on data health and KPIs",
+          "Develop data quality metrics and dashboards",
+          "Investigate and resolve data quality incidents",
+          "Create data quality standards and processes"
+        ],
+        skills: ["Data Validation", "Great Expectations", "dbt tests", "SQL", "Python", "Monitoring", "Data Profiling", "Data Cleansing", "Data Quality Frameworks", "Statistical Analysis", "Root Cause Analysis", "Alerting", "Automation", "Data Lineage", "Data Observability"],
+        tools: ["Great Expectations", "dbt", "Monte Carlo", "Soda", "Airflow", "Snowflake", "BigQuery", "Databricks", "DataDog", "Splunk", "Grafana", "Prometheus", "PagerDuty", "OpsGenie", "Datadog", "New Relic", "Lightup", "Anomalo", "SelectStar", "Acceldata"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹5L – ₹8L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹9L – ₹16L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹16L – ₹25L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹25L – ₹40L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹40L – ₹65L+</td></tr></table>",
+        tips: "Master Great Expectations. Automate data tests. Integrate with CI/CD. Monitor in production. Learn data observability tools. Develop data quality metrics. Focus on prevention over detection."
+      },
+      {
+        title: "Cloud Data Engineer",
+        description: "Design and build cloud-native data solutions on AWS, GCP, or Azure",
+        image: "https://cdn.simpleicons.org/amazonaws/0AF",
+        responsibilities: [
+          "Build serverless data pipelines using cloud services",
+          "Architect data lakes and warehouses in the cloud",
+          "Optimize cost and performance of cloud infrastructure",
+          "Implement security and IAM policies",
+          "Automate deployment using IaC",
+          "Migrate on-premise data systems to cloud",
+          "Design and implement multi-region and hybrid architectures",
+          "Implement disaster recovery and backup strategies"
+        ],
+        skills: ["Cloud (AWS/GCP/Azure)", "Serverless", "IaC (Terraform)", "Lambda", "Glue", "BigQuery", "Dataflow", "Data Lake", "Data Warehouse", "Security", "Cost Optimization", "Networking", "Kubernetes", "CI/CD", "Monitoring", "Disaster Recovery"],
+        tools: ["AWS Lambda", "GCP Dataflow", "Azure Functions", "Terraform", "CloudFormation", "S3", "BigQuery", "Snowflake", "Airflow", "Databricks", "EMR", "Redshift", "Athena", "Glue", "Kinesis", "Pub/Sub", "Event Grid", "Azure Synapse", "Cosmos DB", "Cloud Storage", "VPC", "IAM"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹7L – ₹11L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹12L – ₹20L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹20L – ₹35L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹35L – ₹60L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹60L – ₹1Cr+</td></tr></table>",
+        tips: "Get cloud certified (AWS/GCP). Learn IaC. Master serverless patterns. Focus on cost optimization. Understand cloud security. Learn multi-cloud strategies. Get hands-on with all major cloud providers."
+      },
+      {
+        title: "Prompt Engineer / AI Specialist",
+        description: "Design and optimize prompts for LLMs and generative AI",
+        image: "https://cdn.simpleicons.org/openai/0AF",
+        responsibilities: [
+          "Craft high-quality prompts for chatbots, summarization, and code generation",
+          "Fine-tune and evaluate LLM outputs",
+          "Build RAG systems and AI agents",
+          "Collaborate with developers to integrate AI into products",
+          "Ensure ethical and safe AI usage",
+          "Develop prompt libraries and best practices",
+          "Benchmark and benchmark different LLMs",
+          "Create AI-powered workflows and automations"
+        ],
+        skills: ["Prompt Engineering", "LLMs", "RAG", "LangChain", "AI Safety", "NLP", "Python", "Chatbot Design", "Evaluation Metrics", "Fine-tuning", "Retrieval Systems", "Knowledge Graphs", "Ethical AI", "User Experience", "API Integration"],
+        tools: ["OpenAI API", "Anthropic", "LangChain", "LlamaIndex", "Hugging Face", "Jupyter", "VS Code", "PromptLayer", "Weights & Biases", "MLflow", "Docker", "Kubernetes", "Streamlit", "Gradio", "FastAPI", "Flask", "PostgreSQL", "Pinecone", "Weaviate", "Chroma"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹8L – ₹14L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹15L – ₹25L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹25L – ₹45L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹45L – ₹75L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹75L – ₹1.2Cr+</td></tr></table>",
+        tips: "Master LangChain. Experiment with RAG. Build AI agents. Stay updated on LLM research. Learn fine-tuning. Focus on evaluation and metrics. Develop domain expertise."
+      },
+      {
+        title: "Computer Vision Engineer",
+        description: "Develop models for image and video analysis",
+        image: "https://cdn.simpleicons.org/opencv/0AF",
+        responsibilities: [
+          "Build object detection, segmentation, and classification models",
+          "Optimize models for edge deployment",
+          "Work with video streams and real-time inference",
+          "Annotate and curate image datasets",
+          "Deploy models in production environments",
+          "Develop custom computer vision algorithms",
+          "Integrate CV models with robotics and IoT devices",
+          "Evaluate and benchmark AI models"
+        ],
+        skills: ["OpenCV", "CNN", "YOLO", "TensorFlow", "PyTorch", "Image Processing", "Deep Learning", "Computer Vision", "Object Detection", "Image Segmentation", "3D Vision", "Augmented Reality", "Video Analytics", "Edge Computing", "Model Optimization", "Dataset Curation"],
+        tools: ["OpenCV", "LabelImg", "Roboflow", "TensorFlow", "PyTorch", "ONNX", "Docker", "Kubernetes", "NVIDIA Jetson", "Google Coral", "Intel Movidius", "MediaPipe", "Detectron2", "MMDetection", "Albumentations", "ImgAug", "Pillow", "Scikit-image", "FFmpeg", "GStreamer", "ROS"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹7L – ₹12L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹13L – ₹22L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹22L – ₹40L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹40L – ₹65L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹65L – ₹1Cr+</td></tr></table>",
+        tips: "Master OpenCV and YOLO. Work on real datasets. Learn model quantization. Build real-time apps. Study 3D vision techniques. Get experience with edge devices. Focus on deployment and optimization."
+      },
+      {
+        title: "NLP Engineer",
+        description: "Build models for text processing and language understanding",
+        image: "https://cdn.simpleicons.org/naturallanguageprocessing/0AF",
+        responsibilities: [
+          "Develop text classification, sentiment analysis, and named entity recognition models",
+          "Fine-tune transformer models (BERT, RoBERTa)",
+          "Build chatbots and conversational AI",
+          "Implement text summarization and translation",
+          "Deploy NLP models in production",
+          "Create custom tokenizers and embeddings",
+          "Develop information extraction systems",
+          "Optimize NLP pipelines for performance"
+        ],
+        skills: ["NLP", "Transformers", "BERT", "spaCy", "Hugging Face", "Tokenization", "Attention Mechanisms", "Text Classification", "Named Entity Recognition", "Sentiment Analysis", "Text Summarization", "Machine Translation", "Question Answering", "Chatbots", "Language Modeling", "Embeddings"],
+        tools: ["Hugging Face", "spaCy", "NLTK", "Transformers", "PyTorch", "FastAPI", "Docker", "Kubernetes", "Rasa", "Dialogflow", "Lex", "Watson Assistant", "AllenNLP", "Flair", "Stanford NLP", "CoreNLP", "Gensim", "Word2Vec", "Sentence Transformers", "LangChain", "LlamaIndex"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹7L – ₹12L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹13L – ₹22L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹22L – ₹40L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹40L – ₹65L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹65L – ₹1Cr+</td></tr></table>",
+        tips: "Master Hugging Face. Fine-tune LLMs. Build chatbots. Learn RAG. Deploy with FastAPI. Study attention mechanisms. Focus on multilingual NLP. Learn about bias in language models."
+      },
+      
+      {
+        title: "Data Engineer - Real-time",
+        description: "Specialize in real-time data processing and streaming",
+        image: "https://cdn.simpleicons.org/kafka/0AF",
+        responsibilities: [
+          "Design and implement real-time data pipelines",
+          "Work with streaming technologies (Kafka, Flink, Spark Streaming)",
+          "Build event-driven architectures",
+          "Ensure low-latency data processing",
+          "Monitor and optimize streaming performance",
+          "Develop stream processing applications",
+          "Implement exactly-once processing semantics",
+          "Handle backpressure and fault tolerance"
+        ],
+        skills: ["Stream Processing", "Kafka", "Flink", "Spark Streaming", "Kinesis", "Pub/Sub", "Event-Driven Architecture", "Low-Latency Systems", "Exactly-Once Processing", "State Management", "Watermarking", "Windowing", "Backpressure", "Monitoring", "Performance Optimization"],
+        tools: ["Kafka", "Flink", "Spark Streaming", "Kinesis", "Pub/Sub", "Pulsar", "Redis", "Elasticsearch", "InfluxDB", "Prometheus", "Grafana", "Docker", "Kubernetes", "Airflow", "dbt", "Snowflake", "BigQuery", "Redshift", "Apache Druid", "ClickHouse"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹8L – ₹13L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹15L – ₹25L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹25L – ₹45L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹45L – ₹75L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹75L – ₹1.2Cr+</td></tr></table>",
+        tips: "Master Kafka and Flink. Learn event-driven architecture. Focus on low-latency systems. Understand exactly-once processing. Study backpressure handling. Build real-time dashboards. Learn about stream-table duality."
+      },
+      {
+        title: "Data Scientist - Marketing",
+        description: "Apply data science to marketing and customer analytics",
+        image: "https://cdn.simpleicons.org/marketing/0AF",
+        responsibilities: [
+          "Analyze customer behavior and journey",
+          "Develop customer segmentation and persona models",
+          "Build churn prediction and retention models",
+          "Optimize marketing campaigns and ROI",
+          "Conduct A/B testing and experimentation",
+          "Develop recommendation engines",
+          "Analyze social media and digital marketing data",
+          "Create customer lifetime value models"
+        ],
+        skills: ["Marketing Domain Knowledge", "Customer Analytics", "A/B Testing", "Customer Segmentation", "Churn Prediction", "Recommendation Systems", "Marketing Mix Modeling", "Attribution Modeling", "Digital Analytics", "Social Media Analytics", "Python/R", "Machine Learning", "Statistical Analysis"],
+        tools: ["Python", "R", "SQL", "Tableau", "Power BI", "Google Analytics", "Adobe Analytics", "Mixpanel", "Amplitude", "Segment", "Salesforce", "HubSpot", "Marketo", "Mailchimp", "Facebook Ads", "Google Ads", "LinkedIn Ads", "Twitter Ads", "Pinterest Ads", "Snapchat Ads", "TikTok Ads"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹7L – ₹12L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹13L – ₹22L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹22L – ₹40L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹40L – ₹65L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹65L – ₹1Cr+</td></tr></table>",
+        tips: "Gain marketing domain knowledge. Learn digital analytics platforms. Study customer journey mapping. Focus on experimentation. Build recommendation engines. Understand attribution modeling. Learn about marketing automation."
+      },
+      {
+        title: "Data Engineer - Cloud",
+        description: "Specialize in cloud-based data engineering",
+        image: "https://cdn.simpleicons.org/googlecloud/0AF",
+        responsibilities: [
+          "Design and implement cloud-native data solutions",
+          "Work with cloud data services (BigQuery, Redshift, Snowflake)",
+          "Optimize cloud costs and performance",
+          "Implement cloud security and compliance",
+          "Automate cloud infrastructure with IaC",
+          "Migrate on-premise systems to cloud",
+          "Build serverless data pipelines",
+          "Implement multi-cloud and hybrid architectures"
+        ],
+        skills: ["Cloud Platforms", "BigQuery", "Redshift", "Snowflake", "Cloud Storage", "Serverless", "IaC", "Cloud Security", "Cost Optimization", "Networking", "Kubernetes", "CI/CD", "Monitoring", "Disaster Recovery", "Migration", "Multi-Cloud"],
+        tools: ["BigQuery", "Redshift", "Snowflake", "S3", "Cloud Storage", "Azure Blob", "Lambda", "Cloud Functions", "Azure Functions", "Dataflow", "Glue", "Data Factory", "Terraform", "CloudFormation", "ARM Templates", "Kubernetes", "Docker", "Airflow", "dbt", "Looker", "Tableau", "Power BI"],
+        salary: "<table class='salary-table'><tr><th>Experience</th><th>Salary (INR)</th></tr><tr><td>Entry (0-2 yrs)</td><td>₹8L – ₹13L</td></tr><tr><td>Mid (3-5 yrs)</td><td>₹15L – ₹25L</td></tr><tr><td>Senior (6-10 yrs)</td><td>₹25L – ₹45L+</td></tr><tr><td>Lead (10-15 yrs)</td><td>₹45L – ₹75L+</td></tr><tr><td>Principal (15+ yrs)</td><td>₹75L – ₹1.2Cr+</td></tr></table>",
+        tips: "Get cloud certified. Master cloud data services. Learn IaC. Focus on cost optimization. Understand cloud security. Gain experience with multiple cloud providers. Learn serverless patterns."
+      },
+      {
+        title: "Data Engineer - Big Data",
+        description: "Specialize in large-scale data processing and distributed systems",
+        image: "https://cdn.simpleicons.org/hadoop/0AF",
+        levels: {
+          beginner: [
+            { topic: "Introduction to Big Data", concepts: ["What is Big Data?", "3Vs (Volume, Velocity, Variety)", "Use Cases"], description: "Understand the basics of handling large datasets." },
+            { topic: "Hadoop Basics", concepts: ["HDFS", "YARN", "MapReduce"], description: "Learn the core components of Hadoop." },
+            { topic: "Setup", concepts: ["Single-Node Cluster", "Multi-Node", "Cloudera QuickStart"], description: "Install and configure Hadoop." },
+            { topic: "HDFS Commands", concepts: ["fs -ls", "-put", "-get", "-rm"], description: "Manage files in HDFS." }
+          ],
+          intermediate: [
+            { topic: "MapReduce Programming", concepts: ["Java API", "WordCount Example", "Chaining Jobs"], description: "Write MapReduce jobs." },
+            { topic: "Hive & Pig", concepts: ["HiveQL", "Pig Latin", "Data Querying"], description: "Query data using higher-level languages." },
+            { topic: "Sqoop & Flume", concepts: ["Data Import/Export", "Log Ingestion"], description: "Ingest data into Hadoop." },
+            { topic: "Oozie Workflows", concepts: ["Workflow XML", "Scheduling Jobs"], description: "Orchestrate Hadoop jobs." }
+          ],
+          advanced: [
+            { topic: "Spark Integration", concepts: ["Spark on YARN", "RDDs", "DataFrames"], description: "Use Spark with Hadoop." },
+            { topic: "Security", concepts: ["Kerberos", "Ranger", "Sentry"], description: "Secure big data clusters." },
+            { topic: "Performance Tuning", concepts: ["Compression", "Partitioning", "Resource Allocation"], description: "Optimize big data jobs." },
+            { topic: "HBase", concepts: ["NoSQL Database", "Column Families", "Row Keys"], description: "Store semi-structured data." }
+          ],
+          expert: [
+            { topic: "Cluster Management", concepts: ["Ambari", "Cloudera Manager", "Scaling"], description: "Manage large clusters." },
+            { topic: "Advanced Ecosystems", concepts: ["Druid", "Solr", "Storm"], description: "Integrate with advanced tools." },
+            { topic: "Cloud Big Data", concepts: ["EMR", "Dataproc", "HDInsight"], description: "Run big data on cloud." },
+            { topic: "Big Data Internals", concepts: ["NameNode Federation", "YARN Schedulers"], description: "Understand internals." }
+          ]
+        },
+        tools: ["Hadoop", "Spark", "Hive", "Pig", "Sqoop", "Flume", "Oozie", "HBase", "Ambari", "Cloudera Manager"],
+        difficulty: "intermediate"
+      }
+    ];
+   
+    // === DOM ELEMENTS & EVENT LISTENERS ===
+    document.addEventListener('DOMContentLoaded', function () {
+      const themeToggle = document.getElementById('themeToggle');
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const roadmapsGrid = document.getElementById('roadmapsGrid');
+      const rolesGrid = document.getElementById('rolesGrid');
+      const difficultyFilter = document.getElementById('difficultyFilter');
+      const searchSelect = document.getElementById('searchSelect');
+      const roleSearchSelect = document.getElementById('roleSearchSelect');
+     
+      // Populate the dropdown with roadmap titles
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = 'All Roadmaps';
+      searchSelect.appendChild(defaultOption);
+      roadmaps.forEach(roadmap => {
+        const option = document.createElement('option');
+        option.value = roadmap.title;
+        option.textContent = roadmap.title;
+        searchSelect.appendChild(option);
+      });
+     
+      // Populate the dropdown with job role titles
+      const defaultRoleOption = document.createElement('option');
+      defaultRoleOption.value = '';
+      defaultRoleOption.textContent = 'All Roles';
+      roleSearchSelect.appendChild(defaultRoleOption);
+      jobRoles.forEach(role => {
+        const option = document.createElement('option');
+        option.value = role.title;
+        option.textContent = role.title;
+        roleSearchSelect.appendChild(option);
+      });
+     
+      // === RENDER SKILL ROADMAPS ===
+      function renderRoadmaps(difficulty = 'all', selectedTitle = '') {
+        roadmapsGrid.innerHTML = '';
+        let filteredRoadmaps = roadmaps;
+        if (difficulty !== 'all') {
+          filteredRoadmaps = filteredRoadmaps.filter(r => r.difficulty === difficulty);
+        }
+        if (selectedTitle) {
+          filteredRoadmaps = filteredRoadmaps.filter(r => r.title === selectedTitle);
+        }
+        filteredRoadmaps.forEach((roadmap, idx) => {
+          setTimeout(() => {
+            const card = document.createElement('div');
+            card.className = 'roadmap-card';
+            card.style.animationDelay = (idx * 0.1) + 's';
+           
+            let topicsHTML = '';
+            ['beginner', 'intermediate', 'advanced', 'expert'].forEach(level => {
+              if (roadmap.levels[level] && roadmap.levels[level].length > 0) {
+                const levelLabel = level.charAt(0).toUpperCase() + level.slice(1);
+                const difficultyClass = `${level}-badge`;
+               
+                topicsHTML += `<div class="card-section">
+                  <div class="section-title">${levelLabel} <span class="difficulty-badge ${difficultyClass}">${level.toUpperCase()}</span></div>
+                  <ul class="topic-list">`;
+               
+                roadmap.levels[level].forEach(item => {
+                  topicsHTML += `
+                    <li class="topic-item">
+                      <span class="topic-topic">${item.topic}</span>:
+                      <span class="topic-concepts">${item.concepts.join(', ')}</span>
+                      ${item.description ? `<div class="prerequisites">${item.description}</div>` : ''}
+                    </li>`;
+                });
+                topicsHTML += `</ul></div>`;
+              }
+            });
+           
+            card.innerHTML = `
+              <div class="card-header">
+                <img src="${roadmap.image.trim()}" alt="${roadmap.title}" class="card-icon">
+                <h3 class="card-title">${roadmap.title}</h3>
+              </div>
+              <p class="card-desc">${roadmap.description}</p>
+              ${topicsHTML}
+              <div class="tools-section">
+                <strong>Tools:</strong> ${roadmap.tools.join(', ')}
+              </div>
+            `;
+            roadmapsGrid.appendChild(card);
+          }, idx * 50);
+        });
+      }
+     
+      // === RENDER JOB ROLES ===
+      function renderRoles(selectedTitle = '') {
+        rolesGrid.innerHTML = '';
+        let filteredRoles = jobRoles;
+        if (selectedTitle) {
+          filteredRoles = filteredRoles.filter(r => r.title === selectedTitle);
+        }
+        filteredRoles.forEach((role, idx) => {
+          setTimeout(() => {
+            const card = document.createElement('div');
+            card.className = 'role-card';
+            card.style.animationDelay = (idx * 0.1) + 's';
+           
+            const responsibilitiesHTML = role.responsibilities.map(r => `<li>${r}</li>`).join('');
+            const skillsHTML = role.skills.map(s => `<span class="tag">${s}</span>`).join('');
+            const toolsHTML = role.tools.map(t => `<span class="tag">${t}</span>`).join('');
+           
+            card.innerHTML = `
+              <div class="card-header">
+                <img src="${role.image}" alt="${role.title}" class="card-icon">
+                <h3 class="card-title">${role.title}</h3>
+              </div>
+              <p class="card-desc">${role.description}</p>
+              <div class="card-section">
+                <div class="section-title">Responsibilities</div>
+                <ul class="tags-container">${responsibilitiesHTML}</ul>
+              </div>
+              <div class="card-section">
+                <div class="section-title">Key Skills</div>
+                <div class="tags-container">
+                  ${skillsHTML}
+                </div>
+              </div>
+              <div class="card-section">
+                <div class="section-title">Tools & Technologies</div>
+                <div class="tags-container">
+                  ${toolsHTML}
+                </div>
+              </div>
+              <div class="card-section">
+                <div class="section-title">Salary (INR)</div>
+                ${role.salary}
+              </div>
+              <div class="tips">
+                <strong>Tip:</strong> ${role.tips}
+              </div>
+            `;
+            rolesGrid.appendChild(card);
+          }, idx * 50);
+        });
+      }
+     
+      // === TAB SWITCHING ===
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabButtons.forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
+        });
+      });
+     
+      // === THEME TOGGLE ===
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          document.body.classList.toggle('light-mode');
+          themeToggle.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+          themeToggle.setAttribute('aria-label', document.body.classList.contains('light-mode') ? 'Switch to dark mode' : 'Switch to light mode');
+        });
+      }
+
+      // === DIFFICULTY FILTER ===
+      if (difficultyFilter) {
+        difficultyFilter.addEventListener('change', (e) => {
+          renderRoadmaps(e.target.value, searchSelect.value);
+        });
+      }
+
+      // === DROPDOWN SELECT FOR ROADMAPS ===
+      if (searchSelect) {
+        searchSelect.addEventListener('change', (e) => {
+          renderRoadmaps(difficultyFilter.value, e.target.value);
+        });
+      }
+
+      // === DROPDOWN SELECT FOR JOB ROLES ===
+      if (roleSearchSelect) {
+        roleSearchSelect.addEventListener('change', (e) => {
+          renderRoles(e.target.value);
+        });
+      }
+     
+      // === INITIALIZE ===
+      renderRoadmaps();
+      renderRoles();
+    });
+  </script>
+</body>
+</html>
